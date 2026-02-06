@@ -1,0 +1,200 @@
+
+@import url('https://fonts.googleapis.com/css?family=Dosis:300,400,500');
+
+
+@keyframes astronaut-movement {
+    0% {left:1800px; bottom: 0px;}
+    25% {left:1400px;bottom:0px;transform:rotate(40deg)}
+    50% {left:1800px; bottom: 0px;}
+    75% {left:1400px;bottom:0px;transform:rotate(90deg)}
+    100% {left:1800px; bottom: 0px;transform:rotate(360deg)}
+}
+
+
+
+html, body{
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    font-family: 'Dosis', sans-serif;
+    font-weight: 300;
+    -webkit-user-select: none; /* Safari 3.1+ */
+    -moz-user-select: none; /* Firefox 2+ */
+    -ms-user-select: none; /* IE 10+ */
+    user-select: none; /* Standard syntax */
+}
+
+.background{
+    background: url('https://www.ecoportal.net/en/wp-content/uploads/2025/02/dark-galaxy-.jpg');
+    background-size: cover;
+    background-position: left top;
+    height: 100%;
+    overflow: hidden;
+    
+}
+
+nav {
+    align-items: center;
+    display: flex;
+    border: 0;
+    border-width: 0;
+    background-color: rgba(0,0,0,0.3);
+    margin-top: 20px;
+    margin-left: auto;
+    height: 100px;
+    width: 61%;
+    backdrop-filter: blur(8px);
+    margin-right: 0;
+    
+}
+
+ul {
+    list-style: none;    
+
+}
+
+li {
+    display: inline-block;  
+    position: relative;
+    padding: 42px 20px;
+    overflow: hidden;
+
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    column-gap: 30px;
+    font-family: 'Assistant', sans-serif;
+  }
+
+li::after {
+    background-color: white;
+    content: "";
+    width: 0;
+    height: 3px;
+    left: 0;
+    bottom: 0;
+    transition: width 0.35s ease 0s;
+    position: absolute;
+  }
+  li:hover::after {
+    width: 100%;
+  }
+
+
+.gohomebtn{
+    background-color: #4a474b;
+    position: relative;
+    z-index: 200;
+    margin: 40px auto;
+    width: 140px;
+    padding: 15px 15px;
+    border: 1px solid #0d0d0d;
+    border-radius: 100px;
+    font-weight: 400;
+    display: block;
+    color: black;
+    text-align: center;
+    text-decoration: none;
+    letter-spacing : 2px;
+    font-size: 13px;
+    cursor: pointer;    
+    -webkit-transition: all 0.3s ease-in;
+    -moz-transition: all 0.3s ease-in;
+    -ms-transition: all 0.3s ease-in;
+    -o-transition: all 0.3s ease-in;
+    transition: all 0.3s ease-in;
+}
+
+.gohomebtn:hover{
+    background-color: #020202;
+    color: #fff;
+    transform: scale(1.5);
+    box-shadow: 0px 10px 10px #525252;
+}
+
+.central-body {
+    text-align: center;
+    padding: 1%;
+    margin-left: 300px;
+    margin-right: 300px;
+    background-color: #2f2e3ca3;
+    border: solid 5px gray;
+    margin-top: 5%;
+    height: 300px;
+}
+
+.objects img{
+    z-index: 90;
+    pointer-events: none;
+}
+
+.box_astronaut{
+    position: absolute;
+    z-index: 300;
+    top: 60%;
+    right: 20%;
+    animation-name: astronaut-movement;
+    animation-duration: 45s;
+    animation-iteration-count: infinite;
+  
+  
+}
+
+.msg404{
+    position: relative;
+    z-index: 100;
+    pointer-events: none;
+    font-size: 80px;
+    color: #2b272e;
+    font-weight: 900;
+    filter: drop-shadow(3px 0 0 gray) 
+    drop-shadow(0 3px 0 gray)
+    drop-shadow(-3px 0 0 gray) 
+    drop-shadow(0 -3px 0 gray);
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.notfound{
+    position: relative;
+    z-index: 100;
+    pointer-events: none;
+    font-size: 30px;
+    color: #424242;
+    font-weight: 500;
+    filter: drop-shadow(1px 0 0 gray) 
+    drop-shadow(0 1px 0 gray)
+    drop-shadow(-1px 0 0 gray) 
+    drop-shadow(0 -1px 0 gray);
+}
+
+
+.footer {
+   position: fixed;
+   left: 0;
+   bottom: 0;
+   width: 100%;
+   background-color: rgba(0, 0, 0, 0.596);
+   color: white;
+   text-align: center;
+}
+
+@media only screen and (max-width: 600px){
+    .navbar-links{
+        display: none;
+    }
+    
+    .brand-logo img{
+        width: 120px;
+    }
+    
+    .box_astronaut{
+        top: 70%;
+    }
+    
+    .central-body{
+        padding-bottom: 55%;
+    }
+}

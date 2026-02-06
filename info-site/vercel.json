@@ -1,0 +1,9 @@
+{
+  "version": 2,
+  "rewrites": [
+    { "source": "/", "destination": "/index.html" },
+    { "source": "/about", "destination": "/about.html" },
+    { "source": "/contact-me", "destination": "/contact-me.html" },
+    { "source": "/(.*)", "destination": "/404.html" }
+  ]
+}

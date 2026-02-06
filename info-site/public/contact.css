@@ -1,0 +1,152 @@
+
+html{
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    font-family: 'Dosis', sans-serif;
+    font-weight: 300;
+    -webkit-user-select: none; /* Safari 3.1+ */
+    -moz-user-select: none; /* Firefox 2+ */
+    -ms-user-select: none; /* IE 10+ */
+    user-select: none; /* Standard syntax */
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: #1c1c21;
+    color: #ffffff;
+    display: flex;
+  }
+
+
+nav {
+    align-items: center;
+    display: flex;
+    border: 0;
+    border-width: 0;
+    background-color: rgba(0,0,0,0.3);
+    margin-top: 60px;
+    margin-left: auto;
+    right: 0;
+    height: 100px;
+    width: 61%;
+    margin-bottom: auto;
+    margin-top: 20px;
+    backdrop-filter: blur(8px);
+
+}
+
+ul {
+    list-style: none;    
+
+}
+  li {
+    display: inline-block;  
+    position: relative;
+    padding: 42px 20px;
+    overflow: hidden;
+  }
+
+nav a {
+    color: white;
+    text-decoration: none;
+    column-gap: 30px;
+    font-family: 'Assistant', sans-serif;
+}
+
+li::after {
+    background-color: white;
+    content: "";
+    width: 0;
+    height: 3px;
+    left: 0;
+    bottom: 0;
+    transition: width 0.35s ease 0s;
+    position: absolute;
+}
+
+li:hover::after {
+    width: 100%;
+}
+
+  
+.central-body {
+    text-align: center;
+    align-items: center;
+    padding: 1%;
+    margin-left: 450px;
+    margin-right: 450px;
+    background-color: #000000a3;
+    border: solid 2px gray;
+    margin-top: 10%;
+  }
+
+  h1 {
+    margin-bottom: 10px;
+    font-size: 2rem;
+  }
+
+  p {
+    margin-bottom: 30px;
+    color: #cbd5e1;
+    line-height: 1.6;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  input,
+  textarea {
+    padding: 12px 14px;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+    font-size: 1rem;
+    background: #262628;
+    color: #ffffff;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: #94a3b8;
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 120px;
+  }
+
+  button {
+    margin-top: 10px;
+    padding: 14px;
+    border-radius: 8px;
+    border: none;
+    background: #232324;
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+button:hover {
+    background: #1b1c1f;
+  }
+
+.footer-text {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 0.85rem;
+    color: #94a3b8;
+  }
+
+.nav-container{
+    margin-left: auto;
+    right: 0;
+    width: 100%;
+    top: 0;
+    position: absolute;
+}
