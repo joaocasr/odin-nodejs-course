@@ -1,0 +1,35 @@
+<style>
+    .message{
+        background-color: rgb(127, 127, 158);
+        width: 350px;
+        padding: 5px;
+        margin: 20px;
+        border-radius: 10px;
+        border: solid 1px black;
+    }
+    button{
+        background-color: rgb(45, 45, 78);
+        width:65px;
+        height:30px;
+        color:white;
+        border:0;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    button a{
+        color:white;
+        text-decoration: none;
+    }
+</style>
+
+<div class="message">
+    <h3><%= message.user %></h3>
+    <p><strong>Message: </strong><%= message.text %></p>
+    <p>
+        <button>
+            <a href='/details/<%= id %>'>Details</a>
+        </button>
+    </p>
+</div>

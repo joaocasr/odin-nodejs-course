@@ -1,0 +1,37 @@
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Message Board</title>
+</head>
+<style>
+    body{
+        background-color: rgb(151, 151, 221);
+    }
+    button{
+        background-color: rgb(45, 45, 78);
+        width:100px;
+        height:40px;
+        color:white;
+        border:0;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    button a{
+        color:white;
+        text-decoration: none;
+    }
+</style>
+<body>
+    <h1><%= message.user %></h1>
+    <h3><%= message.added %></h3>
+    <h6><%= message.text %></h6>
+    <button>
+        <a href='/'>Go Back</a>
+    </button>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Message Board</title>
+</head>
+<style>
+    body{
+        background-color: rgb(151, 151, 221);
+    }
+    fieldset{
+        background-color: rgb(60, 60, 95);
+        color:white;
+        font-size: 16px;
+    }
+    .board{
+        border: solid 1px rgb(31, 31, 59);
+        overflow: auto;
+        max-height: 100vh;
+        overflow-y: scroll;
+        scroll-behavior: smooth;
+        height:600px;
+        width:500px;
+        margin:20px;
+    }
+    .central-content{
+        display: flex;
+    }
+    form {
+        margin:20px;
+    }
+    input{
+        background-color: rgb(61, 61, 90);
+        width:250px;
+        height:50px;
+        color:white;
+        border:solid 1px white;
+        border-radius: 10px;
+        display: flex;
+        margin: 10px;
+    }
+    .submitbtn{
+        background-color: rgb(86, 86, 110);
+        width:250px;
+        height:50px;
+        color:white;
+        border:0;
+        border-radius: 10px;
+        display: flex;
+        margin: 10px;
+    }
+    label{
+        margin-left: 20px;
+    }
+</style>
+
+<body>
+    <h1><%= title %></h1>
+    <div class="central-content">
+          <section class="board">
+        <fieldset>Chat</fieldset>
+           <% for(var i=0; i<messages.length; i++) {%>
+        <%- include('message',{message: messages[i], id: messages[i].id}) %>
+    <% } %> 
+    </section>
+    <section class="board">
+        <fieldset>Message Control</fieldset>
+        <form method="POST" action="/new">
+            <label for="lname">User</label><br>
+            <input type="text" name="messageUser"/>
+            <label for="lname">Text</label><br>
+            <input type="text" name="messageText"/>
+            <input class='submitbtn' type="submit" value="submit"/>
+        </form>
+    </section>  
+    </div>
+
+
+</body>
+</html>
