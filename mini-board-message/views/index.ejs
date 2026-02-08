@@ -15,13 +15,13 @@
         color:white;
         font-size: 16px;
     }
-    .board{
+    .boardcontrol{
         border: solid 1px rgb(31, 31, 59);
         height:600px;
         width:500px;
         margin:20px;
     }
-    .boardcontrol{
+    .board{
         border: solid 1px rgb(31, 31, 59);
         overflow: auto;
         max-height: 100vh;
@@ -65,13 +65,13 @@
 <body>
     <h1><%= title %></h1>
     <div class="central-content">
-          <section class="board">
+          <section class="boardcontrol">
         <fieldset>Chat</fieldset>
            <% for(var i=0; i<messages.length; i++) {%>
         <%- include('message',{message: messages[i], id: messages[i].id}) %>
     <% } %> 
     </section>
-    <section class="boardcontrol">
+    <section class="board">
         <fieldset>Message Control</fieldset>
         <form method="POST" action="/new">
             <label for="lname">User</label><br>
