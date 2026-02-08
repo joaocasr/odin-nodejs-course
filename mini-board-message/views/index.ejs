@@ -17,6 +17,12 @@
     }
     .board{
         border: solid 1px rgb(31, 31, 59);
+        height:600px;
+        width:500px;
+        margin:20px;
+    }
+    .boardcontrol{
+        border: solid 1px rgb(31, 31, 59);
         overflow: auto;
         max-height: 100vh;
         overflow-y: scroll;
@@ -65,7 +71,7 @@
         <%- include('message',{message: messages[i], id: messages[i].id}) %>
     <% } %> 
     </section>
-    <section class="board">
+    <section class="boardcontrol">
         <fieldset>Message Control</fieldset>
         <form method="POST" action="/new">
             <label for="lname">User</label><br>
