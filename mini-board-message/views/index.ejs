@@ -65,13 +65,13 @@
 <body>
     <h1><%= title %></h1>
     <div class="central-content">
-          <section class="boardcontrol">
+          <section class="board">
         <fieldset>Chat</fieldset>
            <% for(var i=0; i<messages.length; i++) {%>
         <%- include('message',{message: messages[i], id: messages[i].id}) %>
     <% } %> 
     </section>
-    <section class="board">
+    <section class="boardcontrol">
         <fieldset>Message Control</fieldset>
         <form method="POST" action="/new">
             <label for="lname">User</label><br>
