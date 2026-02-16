@@ -27,6 +27,7 @@ const usersController = {
     res.render("index", {
       title: "Users Platform",
       users: usersStorage.getUsers(),
+      querysearch: null
     });
   },
 
@@ -88,6 +89,7 @@ const usersController = {
     res.render("index", {
       title: "Users Platform",
       users: usersStorage.searchUsers(name),
+      querysearch: name
     });
   }
 }

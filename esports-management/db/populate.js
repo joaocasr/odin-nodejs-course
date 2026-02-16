@@ -225,13 +225,13 @@ INSERT INTO knockout_rounds (season_id, name, round_order) VALUES
 
 INSERT INTO knockout_ties (round_id, team_a_id, team_b_id, winner_team_id) VALUES
 (1,17,11,11), -- Bayern vs Liverpool
-(1,9,6,6),    -- PSG vs Tottenham
-(1,25,3,25),  -- Real Madrid vs Ajax
-(1,5,4,5),    -- Dortmund vs Atlético
-(1,29,10,29), -- Juventus vs Atlético
-(1,1,7,1),    -- Man City vs Schalke
+(1,9,30,30),    -- PSG vs Manchester
+(1,25,18,18),  -- Real Madrid vs Ajax
+(1,5,22,5),    -- Barcelona vs Lyon
+(1,29,1,29), -- Juventus vs Atlético
+(1,14,21,21),    -- Man City vs Schalke
 (1,13,18,13), -- Porto vs Roma
-(1,21,2,21);  -- Barcelona vs Lyon
+(1,6,2,6);  -- Dortmund vs totenham
 
 INSERT INTO knockout_matches
 (tie_id, leg_number, match_date, home_team_id, away_team_id, home_goals, away_goals)
@@ -239,58 +239,59 @@ VALUES
 (1,1,'2019-02-19',17,11,0,0),
 (1,2,'2019-03-13',11,17,3,1),
 
-(2,1,'2019-02-14',9,6,2,2),
-(2,2,'2019-03-06',6,9,1,0),
+(2,1,'2019-02-14',30,9,0,2),
+(2,2,'2019-03-06',9,30,1,3),
 
-(3,1,'2019-02-13',25,3,1,2),
-(3,2,'2019-03-05',3,25,1,4),
+(3,1,'2019-02-13',18,25,1,2),
+(3,2,'2019-03-05',25,18,1,4),
 
-(4,1,'2019-02-13',5,4,3,3),
-(4,2,'2019-03-05',4,5,2,0),
+(4,1,'2019-02-13',22,5,0,0),
+(4,2,'2019-03-05',5,22,5,0),
 
-(5,1,'2019-02-20',29,10,2,0),
-(5,2,'2019-03-12',10,29,3,0),
+(5,1,'2019-02-20',1,29,2,0),
+(5,2,'2019-03-12',29,1,3,0),
 
-(6,1,'2019-02-20',1,7,3,2),
-(6,2,'2019-03-12',7,1,0,7),
+(6,1,'2019-02-20',14,21,2,3),
+(6,2,'2019-03-12',21,14,7,0),
 
-(7,1,'2019-02-12',13,18,2,1),
-(7,2,'2019-03-06',18,13,2,1),
+(7,1,'2019-03-06',26,13,2,1),
+(7,2,'2019-02-12',13,26,2,1),
 
-(8,1,'2019-02-19',21,2,0,0),
-(8,2,'2019-03-13',2,21,5,1);
+(8,1,'2019-02-19',6,2,3,0),
+(8,2,'2019-03-13',2,6,0,1);
+
 
 INSERT INTO knockout_ties (round_id, team_a_id, team_b_id, winner_team_id) VALUES
 (2,11,13,11), -- Liverpool vs Porto
-(2,6,25,6),   -- Tottenham vs Ajax
-(2,1,29,6),   -- Man City vs Tottenham
-(2,21,5,21);  -- Barcelona vs Man United
+(2,18,29,18),   -- Juventus vs Ajax
+(2,6,29,6),   -- Man City vs Tottenham
+(2,21,5,5);  -- Barcelona vs Man United
 
 INSERT INTO knockout_matches
 (tie_id, leg_number, match_date, home_team_id, away_team_id, home_goals, away_goals) VALUES
 (9,1,'2019-04-09',11,13,2,0),
 (9,2,'2019-04-17',13,11,1,4),
 
-(10,1,'2019-04-10',6,25,1,0),
-(10,2,'2019-04-16',25,6,3,2),
+(10,1,'2019-04-10',18,29,1,1),
+(10,2,'2019-04-16',29,18,1,2),
 
-(11,1,'2019-04-09',1,29,1,0),
-(11,2,'2019-04-17',29,1,4,3),
+(11,1,'2019-04-09',6,21,1,0),
+(11,2,'2019-04-17',21,6,4,3),
 
-(12,1,'2019-04-10',21,5,1,0),
-(12,2,'2019-04-16',5,21,0,3);
+(12,1,'2019-04-10',30,5,0,1),
+(12,2,'2019-04-16',5,30,3,0);
 
 INSERT INTO knockout_ties (round_id, team_a_id, team_b_id, winner_team_id) VALUES
-(3,11,21,11), -- Liverpool vs Barcelona
-(3,6,25,6);   -- Tottenham vs Ajax
+(3,11,5,11), -- Liverpool vs Barcelona
+(3,6,18,6);   -- Tottenham vs Ajax
 
 INSERT INTO knockout_matches
 (tie_id, leg_number, match_date, home_team_id, away_team_id, home_goals, away_goals) VALUES
-(13,1,'2019-05-01',21,11,3,0),
-(13,2,'2019-05-07',11,21,4,0),
+(13,1,'2019-05-01',5,11,3,0),
+(13,2,'2019-05-07',11,5,4,0),
 
-(14,1,'2019-04-30',6,25,0,1),
-(14,2,'2019-05-08',25,6,2,3);
+(14,1,'2019-04-30',6,18,0,1),
+(14,2,'2019-05-08',18,6,2,3);
 
 INSERT INTO knockout_ties (round_id, team_a_id, team_b_id, winner_team_id)
 VALUES (4,11,6,11);

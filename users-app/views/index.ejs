@@ -155,6 +155,9 @@
   </nav>
 
   <div class="container">
+    <% if(querysearch){ %>
+      <h3>Results for : <%= querysearch %> </h3>
+    <% } %>
     <h1>Users</h1>
 
     <ul class="user-list">

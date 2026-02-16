@@ -17,7 +17,7 @@
       align-items: center;
       padding: 0.8rem 2rem;
     }
-    nav .logo { font-size: 1.5rem; font-weight: bold; }
+    nav .logo { font-size: 1rem; font-weight: bold; }
     .logoimg{
       display: block;
     }
@@ -41,7 +41,7 @@
     .group-card {
         background: #0b1c3d;
         border-radius: 10px;
-        padding: 15px;
+        padding: 5px;
         color: white;
         box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     }
@@ -91,9 +91,79 @@
       bottom: 0px;
       width: 100%;
     }
+    .season{
+        color: black;
+        font-size: 30px;
+        display: flex;
+        justify-content: center;
+    }
     
     footer a { color: #f5c518; text-decoration: none; margin: 0 0.5rem; }
     footer a:hover { text-decoration: underline; }
+
+    .placards-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        gap: 25px;
+        margin-bottom: 200px;
+    }
+
+    .placard {
+        color:white;
+        background: #2d365a;
+        border-radius: 14px;
+        padding: 20px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+        transition: transform 0.2s ease;
+    }
+
+    .placard:hover {
+        transform: translateY(-5px);
+    }
+
+    .placard-header {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.9rem;
+        opacity: 0.8;
+        margin-bottom: 15px;
+    }
+
+    .teams {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .team {
+        color:white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 40%;
+    }
+
+    .team-name {
+        color:white;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 5px;
+    }
+
+    .score {
+        font-size: 2rem;
+        font-weight: bold;
+    }
+
+    .vs {
+        color:white;
+        font-size: 1rem;
+        opacity: 0.7;
+    }
+    .teamlogo{
+        width:35px;
+        margin:4px;
+    }
   </style>
 </head>
 <body>
@@ -110,58 +180,97 @@
       <li><a href="/">Home</a></li>
       <li><a href="/teams">Teams</a></li>
       <li><a href="/players">Players</a></li>
-      <li><a href="/tournaments">Tournaments</a></li>
-      <li><a href="/matches">Matches</a></li>
     </ul>
   </nav>
 
-  <!-- --- Main Content --- -->
-  <main>
-    <div class="groups-container">
-    <% Object.entries(groups).forEach(([groupName, teams]) => { %>
+  <%- include('partials/knockouttab', {"seasonid": seasonid,"season":season,"phase":phase}) %>
 
-        <div class="group-card">
-        <h2>Group <%= groupName %></h2>
+    <main>
+    <h3 class="season">Season <%= season %></h3> 
+    <% if(groups){ %>
 
-        <table class="standings-table">
-            <thead>
-            <tr>
-                <th>#</th>
-                <th>Team</th>
-                <th>P</th>
-                <th>W</th>
-                <th>D</th>
-                <th>L</th>
-                <th>GF</th>
-                <th>GA</th>
-                <th>Pts</th>
-            </tr>
-            </thead>
-            <tbody>
-            <% teams
-                .sort((a, b) => b.points - a.points)
-                .forEach((team, index) => { %>
+        <div class="groups-container">
+        <% Object.entries(groups).forEach(([groupName, teams]) => { %>
 
-                <tr class="<%= index < 2 ? 'qualified' : '' %>">
-                <td><%= index + 1 %></td>
-                <td><%= team.team_name %></td>
-                <td>6</td>
-                <td><%= team.wins %></td>
-                <td><%= team.draws %></td>
-                <td><%= team.losses %></td>
-                <td><%= team.goals_for %></td>
-                <td><%= team.goals_against %></td>
-                <td><strong><%= team.points %></strong></td>
+            <div class="group-card">
+            <h2>Group <%= groupName %></h2>
+
+            <table class="standings-table">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Team</th>
+                    <th>P</th>
+                    <th>W</th>
+                    <th>D</th>
+                    <th>L</th>
+                    <th>GF</th>
+                    <th>GA</th>
+                    <th>Pts</th>
                 </tr>
+                </thead>
+                <tbody>
+                <% teams
+                    .sort((a, b) => b.points - a.points)
+                    .forEach((team, index) => { %>
 
-            <% }) %>
-            </tbody>
-        </table>
+                    <tr class="<%= index < 2 ? 'qualified' : '' %>">
+                    <td><%= index + 1 %></td>
+                    <td><%= team.team_name %></td>
+                    <td>6</td>
+                    <td><%= team.wins %></td>
+                    <td><%= team.draws %></td>
+                    <td><%= team.losses %></td>
+                    <td><%= team.goals_for %></td>
+                    <td><%= team.goals_against %></td>
+                    <td><strong><%= team.points %></strong></td>
+                    </tr>
+
+                <% }) %>
+                </tbody>
+            </table>
+
+            </div>
+        <% }) %>
 
         </div>
-    <% }) %>
+    <% } %>
+    <% if(games){ %>
+      <div class="placards-grid">
+
+        <% games.forEach(game => { %>
+        <div class="placard">
+
+            <div class="placard-header">
+            Leg <%= game.leg_number %>
+            <span class="date">
+                <%= new Date(game.match_date).toLocaleDateString() %>
+            </span>
+            </div>
+
+            <div class="teams">
+
+            <div class="team">
+                <img class="teamlogo" src="/teams/team<%= game.home_team_id%>.png"/>
+                <span class="team-name"><%= game.hometeam %></span>
+                <span class="score"><%= game.home_goals %></span>
+            </div>
+
+            <div class="vs">vs</div>
+
+            <div class="team">
+                <img class="teamlogo" src="/teams/team<%= game.away_team_id%>.png"/>
+                <span class="team-name"><%= game.awayteam %></span>
+                <span class="score"><%= game.away_goals %></span>
+            </div>
+
+            </div>
+
+        </div>
+        <% }) %>
 
     </div>
+    <% } %>
     
   </main>
 

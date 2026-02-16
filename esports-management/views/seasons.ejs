@@ -17,7 +17,7 @@
       align-items: center;
       padding: 0.8rem 2rem;
     }
-    nav .logo { font-size: 1.5rem; font-weight: bold; }
+    nav .logo { font-size: 1rem; font-weight: bold; }
     .logoimg{
       display: block;
     }
@@ -82,8 +82,6 @@
       <li><a href="/">Home</a></li>
       <li><a href="/teams">Teams</a></li>
       <li><a href="/players">Players</a></li>
-      <li><a href="/tournaments">Tournaments</a></li>
-      <li><a href="/matches">Matches</a></li>
     </ul>
   </nav>
 
@@ -97,7 +95,7 @@
           <h3 class="addseason">+ Create Season</h3>
         </div>
       <% seasons.forEach(season => { %>
-        <div class="season-card" onclick="location.href='/seasons/<%= season.season_id %>'">
+        <div class="season-card" onclick="location.href='/seasons/<%= season.season_id %>?season=<%= season.season_year %>'">
           <h3>Season <%= season.season_year %></h3>
           <p>UEFA CL <%= season.season_year %></p>
         </div>

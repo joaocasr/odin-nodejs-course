@@ -36,7 +36,7 @@ class UsersStorage {
   searchUsers(name){
     let users = {}
     for(const user of Object.values(this.storage)) {
-      if(user.firstName?.includes(name) || user.lastName?.includes(name)){
+      if(user.firstName?.toLowerCase().includes(name.toLowerCase()) || user.lastName?.toLowerCase().includes(name.toLowerCase())){
         users[user.id]=user
       }
     }
