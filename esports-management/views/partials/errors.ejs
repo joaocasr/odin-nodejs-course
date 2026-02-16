@@ -1,0 +1,17 @@
+<!-- views/partials/errors.ejs -->
+<style>
+  ul {
+    list-style-type: none;
+  }
+  li{
+    color:red;
+    text-decoration:none;
+  }
+</style>
+<% if (locals.errors) {%>
+  <ul>
+    <% errors.forEach(function(error) { %>
+      <li><%= error.msg %></li>
+    <% }); %>
+  </ul>
+<% } %>

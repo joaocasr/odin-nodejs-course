@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Champions League Inventory</title>
+  <style>
+    /* --- Reset & Body --- */
+    body { margin: 0; font-family: Arial, sans-serif; background-color: #2519ae87; }
+
+    /* --- Navbar --- */
+    nav {
+      background-color: #1c2760; 
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.8rem 2rem;
+    }
+    nav .logo { font-size: 1.5rem; font-weight: bold; }
+    .logoimg{
+      display: block;
+    }
+    .ucllogo{
+      margin: 10px;
+    }
+    nav ul { list-style: none; display: flex; gap: 1rem; margin: 0; padding: 0; }
+    nav ul li a { color: white; text-decoration: none; font-weight: 500; }
+    nav ul li a:hover { text-decoration: underline; }
+
+    /* --- Main content --- */
+    main { padding: 2rem; max-width: 1200px; margin: auto; }
+    h1, h2 { color: #003399; }
+    table { border-collapse: collapse; width: 100%; margin-bottom: 30px; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background-color: #003399; color: white; }
+    tr:nth-child(even) { background-color: #f2f2f2; }
+    .season-selection { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1rem; }
+    .season-card {
+      background-color: white;
+      padding: 1rem 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      flex: 1 1 150px;
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .season-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    /* --- Footer --- */
+    footer {
+      background-color: #04104d;
+      color: white;
+      text-align: center;
+      padding: 2rem 1rem;
+      margin-top: 2rem;
+      background-image: url('/logos/logofooter.png');
+      position: fixed;
+      left: 0px;
+      bottom: 0px;
+      width: 100%;
+    }
+    
+    footer a { color: #f5c518; text-decoration: none; margin: 0 0.5rem; }
+    footer a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+  <!-- --- Navbar --- -->
+  <nav>
+    <div class="logoimg">
+    <div class="logo">Champions League Inventory</div>
+    <div>
+      <img class="ucllogo" width="80px" height="80px" src="/logos/logo.png"/>
+    </div>
+    </div>
+    <ul>
+      <li><a href="/">Home</a></li>
+      <li><a href="/teams">Teams</a></li>
+      <li><a href="/players">Players</a></li>
+      <li><a href="/tournaments">Tournaments</a></li>
+      <li><a href="/matches">Matches</a></li>
+    </ul>
+  </nav>
+
+  <!-- --- Main Content --- -->
+  <main>
+    <h1>Welcome to the Champions League Inventory</h1>
+    <p>Explore the history of the Champions League by choosing a season below:</p>
+
+    <div class="season-selection">
+      <div class="season-card" onclick="location.href='/create/season'">
+          <h3 class="addseason">+ Create Season</h3>
+        </div>
+      <% seasons.forEach(season => { %>
+        <div class="season-card" onclick="location.href='/seasons/<%= season.season_id %>'">
+          <h3>Season <%= season.season_year %></h3>
+          <p>UEFA CL <%= season.season_year %></p>
+        </div>
+      <% }) %>
+    </div>
+  </main>
+
+  <!-- --- Footer --- -->
+  <footer>
+    <p>&copy; 2026 Champions League Inventory. All Rights Reserved.</p>
+    <p>
+      <a href="/about">About</a> |
+      <a href="/contact">Contact</a> |
+      <a href="/privacy">Privacy Policy</a>
+    </p>
+  </footer>
+
+</body>
+</html>

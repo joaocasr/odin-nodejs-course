@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Champions League Inventory</title>
+  <style>
+    /* --- Reset & Body --- */
+    body { margin: 0; font-family: Arial, sans-serif; background-color: #2519ae87; }
+
+    /* --- Navbar --- */
+    nav {
+      background-color: #1c2760; 
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.8rem 2rem;
+    }
+    nav .logo { font-size: 1.5rem; font-weight: bold; }
+    .logoimg{
+      display: block;
+    }
+    .ucllogo{
+      margin: 10px;
+    }
+    nav ul { list-style: none; display: flex; gap: 1rem; margin: 0; padding: 0; }
+    nav ul li a { color: white; text-decoration: none; font-weight: 500; }
+    nav ul li a:hover { text-decoration: underline; }
+
+    /* --- Main content --- */
+    main { padding: 2rem; max-width: 1200px; margin: auto; }
+    .groups-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 20px;
+        padding: 20px;
+        margin-bottom: 200px;
+    }
+
+    .group-card {
+        background: #0b1c3d;
+        border-radius: 10px;
+        padding: 15px;
+        color: white;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+
+    .group-card h2 {
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .standings-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .standings-table th,
+    .standings-table td {
+        padding: 8px;
+        text-align: center;
+    }
+
+    .standings-table thead {
+        background: #142a5c;
+    }
+
+    .standings-table tbody tr:nth-child(even) {
+        background: #10244f;
+    }
+
+    .standings-table tbody tr:hover {
+        background: #1e3a8a;
+    }
+
+    .qualified {
+        border-left: 4px solid #00d4ff;
+    }
+    
+    /* --- Footer --- */
+    footer {
+      background-color: #04104d;
+      color: white;
+      text-align: center;
+      padding: 2rem 1rem;
+      margin-top: 2rem;
+      background-image: url('/logos/logofooter.png');
+      position: fixed;
+      left: 0px;
+      bottom: 0px;
+      width: 100%;
+    }
+    
+    footer a { color: #f5c518; text-decoration: none; margin: 0 0.5rem; }
+    footer a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+  <!-- --- Navbar --- -->
+  <nav>
+    <div class="logoimg">
+    <div class="logo">Champions League Inventory</div>
+    <div>
+      <img class="ucllogo" width="80px" height="80px" src="/logos/logo.png"/>
+    </div>
+    </div>
+    <ul>
+      <li><a href="/">Home</a></li>
+      <li><a href="/teams">Teams</a></li>
+      <li><a href="/players">Players</a></li>
+      <li><a href="/tournaments">Tournaments</a></li>
+      <li><a href="/matches">Matches</a></li>
+    </ul>
+  </nav>
+
+  <!-- --- Main Content --- -->
+  <main>
+    <div class="groups-container">
+    <% Object.entries(groups).forEach(([groupName, teams]) => { %>
+
+        <div class="group-card">
+        <h2>Group <%= groupName %></h2>
+
+        <table class="standings-table">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Team</th>
+                <th>P</th>
+                <th>W</th>
+                <th>D</th>
+                <th>L</th>
+                <th>GF</th>
+                <th>GA</th>
+                <th>Pts</th>
+            </tr>
+            </thead>
+            <tbody>
+            <% teams
+                .sort((a, b) => b.points - a.points)
+                .forEach((team, index) => { %>
+
+                <tr class="<%= index < 2 ? 'qualified' : '' %>">
+                <td><%= index + 1 %></td>
+                <td><%= team.team_name %></td>
+                <td>6</td>
+                <td><%= team.wins %></td>
+                <td><%= team.draws %></td>
+                <td><%= team.losses %></td>
+                <td><%= team.goals_for %></td>
+                <td><%= team.goals_against %></td>
+                <td><strong><%= team.points %></strong></td>
+                </tr>
+
+            <% }) %>
+            </tbody>
+        </table>
+
+        </div>
+    <% }) %>
+
+    </div>
+    
+  </main>
+
+  <!-- --- Footer --- -->
+  <footer>
+    <p>&copy; 2026 Champions League Inventory. All Rights Reserved.</p>
+    <p>
+      <a href="/about">About</a> |
+      <a href="/contact">Contact</a> |
+      <a href="/privacy">Privacy Policy</a>
+    </p>
+  </footer>
+
+</body>
+</html>
