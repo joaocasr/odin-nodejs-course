@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Champions League Inventory</title>
+  <style>
+
+    body { margin: 0; font-family: Arial, sans-serif; background-color: #2519ae87; }
+
+    nav {
+      background-color: #1c2760; 
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.8rem 2rem;
+    }
+    nav .logo { font-size: 1rem; font-weight: bold; }
+    .logoimg{
+      display: block;
+    }
+    .ucllogo{
+      margin: 10px;
+    }
+    nav ul { list-style: none; display: flex; gap: 1rem; margin: 0; padding: 0; }
+    nav ul li a { color: white; text-decoration: none; font-weight: 500; }
+    nav ul li a:hover { text-decoration: underline; }
+
+    table {
+        width: 90%;
+        border-collapse: collapse;
+        background: #24305f;
+        border-radius: 12px;
+        overflow: hidden;
+        margin-top:50px;
+        margin-left:100px;
+        margin-right:20px;
+        margin-bottom: 200px;
+    }
+
+    thead {
+        background: #0b2670;
+        color:rgb(100, 100, 100);
+    }
+
+    th, td {
+        padding: 12px;
+        text-align: left;
+        color:rgb(201, 199, 199);
+    }
+
+    tbody tr:nth-child(even) {
+        background: #233675;
+    }
+
+    tbody tr:hover {
+        background: #2c4baa;
+        cursor: pointer;
+    }
+    
+    footer {
+      background-color: #04104d;
+      color: white;
+      text-align: center;
+      padding: 2rem 1rem;
+      margin-top: 2rem;
+      background-image: url('/logos/logofooter.png');
+      position: fixed;
+      left: 0px;
+      bottom: 0px;
+      width: 100%;
+    }
+    .season{
+        color: black;
+        font-size: 45px;
+        display: flex;
+        justify-content: center;
+    }
+    
+    footer a { color: #f5c518; text-decoration: none; margin: 0 0.5rem; }
+    footer a:hover { text-decoration: underline; }
+
+    .placards-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        gap: 25px;
+        margin-bottom: 200px;
+    }
+
+    .placard {
+        color:white;
+        background: #2d365a;
+        border-radius: 14px;
+        padding: 20px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+        transition: transform 0.2s ease;
+    }
+
+    .placard:hover {
+        transform: translateY(-5px);
+    }
+
+    .placard-header {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.9rem;
+        opacity: 0.8;
+        margin-bottom: 15px;
+    }
+
+    .teams {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .team {
+        color:white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 40%;
+    }
+
+    .team-name {
+        color:white;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 5px;
+    }
+
+    .score {
+        font-size: 2rem;
+        font-weight: bold;
+    }
+
+    .vs {
+        color:white;
+        font-size: 1rem;
+        opacity: 0.7;
+    }
+    .teamlogo{
+        width:35px;
+        margin:4px;
+    }
+    .updatebtn{
+        background-color: #297ae4;
+        border-radius: 4px;
+        text-align: center;
+        border: solid 1px white;
+        padding: 10px;
+        box-shadow: 5px 5px #04104d;
+    }
+    .deletebtn{
+        background-color: #b42424;
+        border-radius: 4px;
+        text-align: center;
+        border: solid 1px white;
+        padding: 10px;
+        box-shadow: 5px 5px rgb(59, 15, 15);
+    }
+    .navlink{
+        background-color: #1e3a8a;
+        border-radius: 4px;
+        border: solid 1px white;
+        padding: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- --- Navbar --- -->
+  <nav>
+    <div class="logoimg">
+    <div class="logo">Champions League Inventory</div>
+    <div>
+      <img class="ucllogo" width="80px" height="80px" src="/logos/logo.png"/>
+    </div>
+    </div>
+    <ul>
+      <div class="navlink"><li><a href="/">Home</a></li></div>
+      <div class="navlink"><li><a href="/teams">Teams</a></li></div>
+      <div class="navlink"><li><a href="/players/seasons/<%= season %>/<%= seasonid %>">Players</a></li></div>
+    </ul>
+  </nav>
+
+    <main>
+        <h3 class="season">Season <%= season %> Players</h3> 
+     <table id="playersTable">
+
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Real Name</th>
+          <th>Country</th>
+          <th>Position</th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+        <% players.forEach(player => { %>
+          <tr>
+            <td onclick="location.href='/players/<%= seasonid %>/<%= player.player_id %>'"><%= player.name %></td>
+            <td onclick="location.href='/players/<%= seasonid %>/<%= player.player_id %>'"><%= player.real_name || "-" %></td>
+            <td onclick="location.href='/players/<%= seasonid %>/<%= player.player_id %>'"><%= player.country %></td>
+            <td onclick="location.href='/players/<%= seasonid %>/<%= player.player_id %>'"><%= player.position %></td>
+            <td><div class="updatebtn"><a>Update</a></div></td>
+            <td><div class="deletebtn"><a>Delete</a></div></td>
+          </tr>
+        <% }) %>
+
+      </tbody>
+
+    </table>
+    </main>
+
+  <!-- --- Footer --- -->
+  <footer>
+    <p>&copy; 2026 Champions League Inventory. All Rights Reserved.</p>
+    <p>
+      <a href="/about">About</a> |
+      <a href="/contact">Contact</a> |
+      <a href="/privacy">Privacy Policy</a>
+    </p>
+  </footer>
+
+</body>
+</html>

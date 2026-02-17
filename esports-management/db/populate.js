@@ -81,7 +81,12 @@ CREATE TABLE players (
     name VARCHAR(50) NOT NULL UNIQUE,
     real_name VARCHAR(100),
     country VARCHAR(50),
-    position VARCHAR(50)
+    position VARCHAR(50),
+    goals INT,
+    matches INT,
+    assists INT,
+    yellows INT,
+    reds INT
 );
 
 CREATE TABLE player_teams (
@@ -300,167 +305,264 @@ INSERT INTO knockout_matches
 (tie_id, leg_number, match_date, home_team_id, away_team_id, home_goals, away_goals) VALUES
 (15,1,'2019-06-01',11,6,2,0);
 
-INSERT INTO players (name, real_name, country, position) VALUES
-
+INSERT INTO players (name, real_name, country, position, goals, matches, assists, yellows, reds) VALUES
 -- Atlético Madrid
-('Jan Oblak','Jan Oblak','Slovenia','Goalkeeper'),
-('Antoine Griezmann','Antoine Griezmann','France','Forward'),
-('Diego Godín','Diego Godín','Uruguay','Defender'),
+('Jan Oblak','Jan Oblak','Slovenia','Goalkeeper',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
+('Antoine Griezmann','Antoine Griezmann','France','Forward',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
+('Diego Godín','Diego Godín','Uruguay','Defender',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
 
 -- Borussia Dortmund
-('Marco Reus','Marco Reus','Germany','Midfielder'),
-('Jadon Sancho','Jadon Sancho','England','Winger'),
-('Axel Witsel','Axel Witsel','Belgium','Midfielder'),
+('Marco Reus','Marco Reus','Germany','Midfielder',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
+('Jadon Sancho','Jadon Sancho','England','Winger',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
+('Axel Witsel','Axel Witsel','Belgium','Midfielder',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
 
 -- Club Brugge
-('Hans Vanaken','Hans Vanaken','Belgium','Midfielder'),
-('Wesley Moraes','Wesley Moraes','Brazil','Forward'),
-('Ruud Vormer','Ruud Vormer','Netherlands','Midfielder'),
+('Hans Vanaken','Hans Vanaken','Belgium','Midfielder',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
+('Wesley Moraes','Wesley Moraes','Brazil','Forward',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
+('Ruud Vormer','Ruud Vormer','Netherlands','Midfielder',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
 
 -- Monaco
-('Radamel Falcao','Radamel Falcao','Colombia','Forward'),
-('Youri Tielemans','Youri Tielemans','Belgium','Midfielder'),
-('Danijel Subašić','Danijel Subašić','Croatia','Goalkeeper'),
+('Radamel Falcao','Radamel Falcao','Colombia','Forward',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
+('Youri Tielemans','Youri Tielemans','Belgium','Midfielder',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
+('Danijel Subašić','Danijel Subašić','Croatia','Goalkeeper',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
 
 -- Barcelona
-('Lionel Messi','Lionel Messi','Argentina','Forward'),
-('Luis Suárez','Luis Suárez','Uruguay','Forward'),
-('Gerard Piqué','Gerard Piqué','Spain','Defender'),
+('Lionel Messi','Lionel Messi','Argentina','Forward',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
+('Luis Suárez','Luis Suárez','Uruguay','Forward',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
+('Gerard Piqué','Gerard Piqué','Spain','Defender',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
 
 -- Tottenham
-('Harry Kane','Harry Kane','England','Forward'),
-('Heung-min Son','Son Heung-min','South Korea','Forward'),
-('Hugo Lloris','Hugo Lloris','France','Goalkeeper'),
+('Harry Kane','Harry Kane','England','Forward',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
+('Heung-min Son','Son Heung-min','South Korea','Forward',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
+('Hugo Lloris','Hugo Lloris','France','Goalkeeper',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
 
 -- PSV
-('Hirving Lozano','Hirving Lozano','Mexico','Winger'),
-('Luuk de Jong','Luuk de Jong','Netherlands','Forward'),
-('Jeroen Zoet','Jeroen Zoet','Netherlands','Goalkeeper'),
+('Hirving Lozano','Hirving Lozano','Mexico','Winger',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
+('Luuk de Jong','Luuk de Jong','Netherlands','Forward',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
+('Jeroen Zoet','Jeroen Zoet','Netherlands','Goalkeeper',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
 
 -- Inter
-('Mauro Icardi','Mauro Icardi','Argentina','Forward'),
-('Ivan Perišić','Ivan Perišić','Croatia','Winger'),
-('Samir Handanović','Samir Handanović','Slovenia','Goalkeeper'),
+('Mauro Icardi','Mauro Icardi','Argentina','Forward',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
+('Ivan Perišić','Ivan Perišić','Croatia','Winger',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
+('Samir Handanović','Samir Handanović','Slovenia','Goalkeeper',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
 
 -- PSG
-('Kylian Mbappé','Kylian Mbappé','France','Forward'),
-('Neymar','Neymar Jr','Brazil','Forward'),
-('Edinson Cavani','Edinson Cavani','Uruguay','Forward'),
+('Kylian Mbappé','Kylian Mbappé','France','Forward',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
+('Neymar','Neymar Jr','Brazil','Forward',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
+('Edinson Cavani','Edinson Cavani','Uruguay','Forward',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
 
 -- Napoli
-('Lorenzo Insigne','Lorenzo Insigne','Italy','Forward'),
-('Dries Mertens','Dries Mertens','Belgium','Forward'),
-('Kalidou Koulibaly','Kalidou Koulibaly','Senegal','Defender'),
+('Lorenzo Insigne','Lorenzo Insigne','Italy','Forward',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
+('Dries Mertens','Dries Mertens','Belgium','Forward',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
+('Kalidou Koulibaly','Kalidou Koulibaly','Senegal','Defender',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
 
 -- Liverpool
-('Mohamed Salah','Mohamed Salah','Egypt','Forward'),
-('Virgil van Dijk','Virgil van Dijk','Netherlands','Defender'),
-('Alisson Becker','Alisson Becker','Brazil','Goalkeeper'),
+('Mohamed Salah','Mohamed Salah','Egypt','Forward',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
+('Virgil van Dijk','Virgil van Dijk','Netherlands','Defender',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
+('Alisson Becker','Alisson Becker','Brazil','Goalkeeper',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
 
 -- Red Star
-('Marko Marin','Marko Marin','Germany','Midfielder'),
-('El Fardou Ben','El Fardou Ben','Comoros','Forward'),
-('Milan Borjan','Milan Borjan','Canada','Goalkeeper'),
+('Marko Marin','Marko Marin','Germany','Midfielder',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
+('El Fardou Ben','El Fardou Ben','Comoros','Forward',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
+('Milan Borjan','Milan Borjan','Canada','Goalkeeper',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
 
 -- Porto
-('Iker Casillas','Iker Casillas','Spain','Goalkeeper'),
-('Éder Militão','Éder Militão','Brazil','Defender'),
-('Jesús Corona','Jesús Corona','Mexico','Winger'),
+('Iker Casillas','Iker Casillas','Spain','Goalkeeper',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
+('Éder Militão','Éder Militão','Brazil','Defender',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
+('Jesús Corona','Jesús Corona','Mexico','Winger',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
 
 -- Schalke
-('Weston McKennie','Weston McKennie','USA','Midfielder'),
-('Naldo','Ronaldo Aparecido Rodrigues','Brazil','Defender'),
-('Alexander Nübel','Alexander Nübel','Germany','Goalkeeper'),
+('Weston McKennie','Weston McKennie','USA','Midfielder',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
+('Naldo','Ronaldo Aparecido Rodrigues','Brazil','Defender',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
+('Alexander Nübel','Alexander Nübel','Germany','Goalkeeper',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
 
 -- Galatasaray
-('Fernando Muslera','Fernando Muslera','Uruguay','Goalkeeper'),
-('Younès Belhanda','Younès Belhanda','Morocco','Midfielder'),
-('Sofiane Feghouli','Sofiane Feghouli','Algeria','Winger'),
+('Fernando Muslera','Fernando Muslera','Uruguay','Goalkeeper',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
+('Younès Belhanda','Younès Belhanda','Morocco','Midfielder',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
+('Sofiane Feghouli','Sofiane Feghouli','Algeria','Winger',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
 
 -- Lokomotiv Moscow
-('Manuel Fernandes','Manuel Fernandes','Portugal','Midfielder'),
-('Fyodor Smolov','Fyodor Smolov','Russia','Forward'),
-('Guilherme Marinato','Guilherme Marinato','Brazil','Goalkeeper'),
+('Manuel Fernandes','Manuel Fernandes','Portugal','Midfielder',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
+('Fyodor Smolov','Fyodor Smolov','Russia','Forward',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
+('Guilherme Marinato','Guilherme Marinato','Brazil','Goalkeeper',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
 
 -- Bayern
-('Robert Lewandowski','Robert Lewandowski','Poland','Forward'),
-('Thomas Müller','Thomas Müller','Germany','Forward'),
-('Manuel Neuer','Manuel Neuer','Germany','Goalkeeper'),
+('Robert Lewandowski','Robert Lewandowski','Poland','Forward',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
+('Thomas Müller','Thomas Müller','Germany','Forward',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
+('Manuel Neuer','Manuel Neuer','Germany','Goalkeeper',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
 
 -- Ajax
-('Frenkie de Jong','Frenkie de Jong','Netherlands','Midfielder'),
-('Matthijs de Ligt','Matthijs de Ligt','Netherlands','Defender'),
-('Dušan Tadić','Dušan Tadić','Serbia','Forward'),
+('Frenkie de Jong','Frenkie de Jong','Netherlands','Midfielder',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
+('Matthijs de Ligt','Matthijs de Ligt','Netherlands','Defender',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
+('Dušan Tadić','Dušan Tadić','Serbia','Forward',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
 
 -- Benfica
-('João Félix','João Félix','Portugal','Forward'),
-('Rúben Dias','Rúben Dias','Portugal','Defender'),
-('Odysseas Vlachodimos','Odysseas Vlachodimos','Greece','Goalkeeper'),
+('João Félix','João Félix','Portugal','Forward',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
+('Rúben Dias','Rúben Dias','Portugal','Defender',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
+('Odysseas Vlachodimos','Odysseas Vlachodimos','Greece','Goalkeeper',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
 
 -- AEK Athens
-('Petros Mantalos','Petros Mantalos','Greece','Midfielder'),
-('Ezequiel Ponce','Ezequiel Ponce','Argentina','Forward'),
-('Vasilis Barkas','Vasilis Barkas','Greece','Goalkeeper'),
+('Petros Mantalos','Petros Mantalos','Greece','Midfielder',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
+('Ezequiel Ponce','Ezequiel Ponce','Argentina','Forward',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
+('Vasilis Barkas','Vasilis Barkas','Greece','Goalkeeper',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
 
 -- Man City
-('Kevin De Bruyne','Kevin De Bruyne','Belgium','Midfielder'),
-('Sergio Agüero','Sergio Agüero','Argentina','Forward'),
-('Ederson','Ederson Moraes','Brazil','Goalkeeper'),
+('Kevin De Bruyne','Kevin De Bruyne','Belgium','Midfielder',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
+('Sergio Agüero','Sergio Agüero','Argentina','Forward',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
+('Ederson','Ederson Moraes','Brazil','Goalkeeper',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
 
 -- Lyon
-('Memphis Depay','Memphis Depay','Netherlands','Forward'),
-('Nabil Fekir','Nabil Fekir','France','Midfielder'),
-('Anthony Lopes','Anthony Lopes','Portugal','Goalkeeper'),
+('Memphis Depay','Memphis Depay','Netherlands','Forward',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
+('Nabil Fekir','Nabil Fekir','France','Midfielder',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
+('Anthony Lopes','Anthony Lopes','Portugal','Goalkeeper',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
 
 -- Shakhtar
-('Taison','Taison Barcellos','Brazil','Winger'),
-('Marlos','Marlos Romero','Ukraine','Midfielder'),
-('Andriy Pyatov','Andriy Pyatov','Ukraine','Goalkeeper'),
+('Taison','Taison Barcellos','Brazil','Winger',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
+('Marlos','Marlos Romero','Ukraine','Midfielder',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
+('Andriy Pyatov','Andriy Pyatov','Ukraine','Goalkeeper',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
 
 -- Hoffenheim
-('Andrej Kramarić','Andrej Kramarić','Croatia','Forward'),
-('Kerem Demirbay','Kerem Demirbay','Germany','Midfielder'),
-('Oliver Baumann','Oliver Baumann','Germany','Goalkeeper'),
+('Andrej Kramarić','Andrej Kramarić','Croatia','Forward',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
+('Kerem Demirbay','Kerem Demirbay','Germany','Midfielder',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
+('Oliver Baumann','Oliver Baumann','Germany','Goalkeeper',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
 
 -- Real Madrid
-('Cristiano Ronaldo','Cristiano Ronaldo','Portugal','Forward'),
-('Luka Modrić','Luka Modrić','Croatia','Midfielder'),
-('Sergio Ramos','Sergio Ramos','Spain','Defender'),
+('Cristiano Ronaldo','Cristiano Ronaldo','Portugal','Forward',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
+('Luka Modrić','Luka Modrić','Croatia','Midfielder',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
+('Sergio Ramos','Sergio Ramos','Spain','Defender',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
 
 -- Roma
-('Edin Džeko','Edin Džeko','Bosnia','Forward'),
-('Daniele De Rossi','Daniele De Rossi','Italy','Midfielder'),
-('Alisson','Alisson Becker','Brazil','Goalkeeper'),
+('Edin Džeko','Edin Džeko','Bosnia','Forward',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
+('Daniele De Rossi','Daniele De Rossi','Italy','Midfielder',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
+('Alisson','Alisson Becker','Brazil','Goalkeeper',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
 
 -- CSKA
-('Alan Dzagoev','Alan Dzagoev','Russia','Midfielder'),
-('Fedor Chalov','Fedor Chalov','Russia','Forward'),
-('Igor Akinfeev','Igor Akinfeev','Russia','Goalkeeper'),
+('Alan Dzagoev','Alan Dzagoev','Russia','Midfielder',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
+('Fedor Chalov','Fedor Chalov','Russia','Forward',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
+('Igor Akinfeev','Igor Akinfeev','Russia','Goalkeeper',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
 
 -- Plzen
-('Patrik Hrošovský','Patrik Hrošovský','Slovakia','Midfielder'),
-('Michael Krmenčík','Michael Krmenčík','Czech Republic','Forward'),
-('Aleš Hruška','Aleš Hruška','Czech Republic','Goalkeeper'),
+('Patrik Hrošovský','Patrik Hrošovský','Slovakia','Midfielder',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
+('Michael Krmenčík','Michael Krmenčík','Czech Republic','Forward',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
+('Aleš Hruška','Aleš Hruška','Czech Republic','Goalkeeper',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
 
 -- Juventus
-('Cristiano Ronaldo Juve','Cristiano Ronaldo','Portugal','Forward'),
-('Paulo Dybala','Paulo Dybala','Argentina','Forward'),
-('Gianluigi Buffon','Gianluigi Buffon','Italy','Goalkeeper'),
+('Cristiano Ronaldo Juve','Cristiano Ronaldo','Portugal','Forward',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
+('Paulo Dybala','Paulo Dybala','Argentina','Forward',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
+('Gianluigi Buffon','Gianluigi Buffon','Italy','Goalkeeper',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
 
 -- Man United
-('Paul Pogba','Paul Pogba','France','Midfielder'),
-('Marcus Rashford','Marcus Rashford','England','Forward'),
-('David De Gea','David De Gea','Spain','Goalkeeper'),
+('Paul Pogba','Paul Pogba','France','Midfielder',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
+('Marcus Rashford','Marcus Rashford','England','Forward',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
+('David De Gea','David De Gea','Spain','Goalkeeper',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
 
 -- Valencia
-('Rodrigo Moreno','Rodrigo Moreno','Spain','Forward'),
-('Dani Parejo','Dani Parejo','Spain','Midfielder'),
-('Neto','Norberto Neto','Brazil','Goalkeeper'),
+('Rodrigo Moreno','Rodrigo Moreno','Spain','Forward',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
+('Dani Parejo','Dani Parejo','Spain','Midfielder',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
+('Neto','Norberto Neto','Brazil','Goalkeeper',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
 
 -- Young Boys
-('Guillaume Hoarau','Guillaume Hoarau','France','Forward'),
-('Christian Fassnacht','Christian Fassnacht','Switzerland','Midfielder'),
-('David von Ballmoos','David von Ballmoos','Switzerland','Goalkeeper');
+('Guillaume Hoarau','Guillaume Hoarau','France','Forward',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
+('Christian Fassnacht','Christian Fassnacht','Switzerland','Midfielder',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1)),
+('David von Ballmoos','David von Ballmoos','Switzerland','Goalkeeper',floor(random()*3),floor(random()*13)+1,floor(random()*2),floor(random()*3),floor(random()*1));
+
+INSERT INTO player_teams (player_id,team_id,season_id) VALUES
+(1,1,1),
+(2,1,1),
+(3,1,1),
+(4,2,1),
+(5,2,1),
+(6,2,1),
+(7,3,1),
+(8,3,1),
+(9,3,1),
+(10,4,1),
+(11,4,1),
+(12,4,1),
+(13,5,1),
+(14,5,1),
+(15,5,1),
+(16,6,1),
+(17,6,1),
+(18,6,1),
+(19,7,1),
+(20,7,1),
+(21,7,1),
+(22,8,1),
+(23,8,1),
+(24,8,1),
+(25,9,1),
+(26,9,1),
+(27,9,1),
+(28,10,1),
+(29,10,1),
+(30,10,1),
+(31,11,1),
+(32,11,1),
+(33,11,1),
+(34,12,1),
+(35,12,1),
+(36,12,1),
+(37,13,1),
+(38,13,1),
+(39,13,1),
+(40,14,1),
+(41,14,1),
+(42,14,1),
+(43,15,1),
+(44,15,1),
+(45,15,1),
+(46,16,1),
+(47,16,1),
+(48,16,1),
+(49,17,1),
+(50,17,1),
+(51,17,1),
+(52,18,1),
+(53,18,1),
+(54,18,1),
+(55,19,1),
+(56,19,1),
+(57,19,1),
+(58,20,1),
+(59,20,1),
+(60,20,1),
+(61,21,1),
+(62,21,1),
+(63,21,1),
+(64,22,1),
+(65,22,1),
+(66,22,1),
+(67,23,1),
+(68,23,1),
+(69,23,1),
+(70,24,1),
+(71,24,1),
+(72,24,1),
+(73,25,1),
+(74,25,1),
+(75,25,1),
+(76,26,1),
+(77,26,1),
+(78,26,1),
+(79,27,1),
+(80,27,1),
+(81,27,1),
+(82,28,1),
+(83,28,1),
+(84,28,1),
+(85,29,1),
+(86,29,1),
+(87,29,1),
+(88,30,1),
+(89,30,1),
+(90,30,1),
+(91,31,1),
+(92,31,1),
+(93,31,1),
+(94,32,1),
+(95,32,1),
+(96,32,1);
 `
 
 async function main() {

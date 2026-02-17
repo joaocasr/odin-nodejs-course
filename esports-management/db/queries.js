@@ -42,6 +42,38 @@ const db = {
             JOIN teams at ON at.team_id = km.away_team_id
             WHERE kr.season_id ='${season}' and kr.round_order = '${phase}';`);
         return rows;
+    },
+    getPlayers: async (seasonid) => {
+        const { rows } = await pool.query(`SELECT 
+            p.player_id,
+            p.name, 
+            p.real_name,
+            p.country,
+            p.position FROM players p
+            JOIN player_teams pt ON p.player_id = pt.player_id
+            WHERE pt.season_id = ${seasonid};`);
+        return rows;
+    },
+    getPlayer: async (seasonid,playerid) => {
+        const { rows } = await pool.query(`SELECT 
+            p.player_id,
+            p.name,
+            p.real_name ,
+            p.country ,
+            p.position,
+            p.goals,
+            p.matches,
+            p.assists,
+            p.yellows,
+            p.reds,
+            t.team_id AS idteam,
+            t.name AS teamname
+            FROM players p
+            JOIN player_teams pt ON p.player_id = pt.player_id
+            JOIN teams t ON t.team_id = pt.team_id
+            WHERE pt.season_id = ${seasonid} AND p.player_id = ${playerid}
+            LIMIT 1;`);
+        return rows;
     }
 }
 

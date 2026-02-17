@@ -164,6 +164,12 @@
         width:35px;
         margin:4px;
     }
+    .navlink{
+        background-color: #1e3a8a;
+        border-radius: 4px;
+        border: solid 1px white;
+        padding: 10px;
+    }
   </style>
 </head>
 <body>
@@ -177,9 +183,9 @@
     </div>
     </div>
     <ul>
-      <li><a href="/">Home</a></li>
-      <li><a href="/teams">Teams</a></li>
-      <li><a href="/players">Players</a></li>
+      <div class="navlink"><li><a href="/">Home</a></li></div>
+      <div class="navlink"><li><a href="/teams">Teams</a></li></div>
+      <div class="navlink"><li><a href="/players/seasons/<%= season %>/<%= seasonid %>">Players</a></li></div>
     </ul>
   </nav>
 

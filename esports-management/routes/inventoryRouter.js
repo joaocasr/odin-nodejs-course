@@ -9,4 +9,13 @@ inventoryRouter.get("/seasons/:season_id", function(req,res){
     else if(req.query.season) inventoryController.getGroupStanding(res,req.query.season,req.params.season_id)
 });
 
+inventoryRouter.get("/teams", inventoryController.getTeams);
+inventoryRouter.get("/players/seasons/:season/:idseason", function(req,res){
+    inventoryController.getPlayers(res,req.params.season,req.params.idseason)
+});
+inventoryRouter.get("/players/:seasonid/:idplayer", function(req,res){
+    inventoryController.getPlayer(res,req.params.seasonid,req.params.idplayer)
+});
+
+
 export default inventoryRouter;
