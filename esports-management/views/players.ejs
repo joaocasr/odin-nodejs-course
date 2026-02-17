@@ -70,9 +70,11 @@
       left: 0px;
       bottom: 0px;
       width: 100%;
+      clear: both;
+      position: relative;
     }
     .season{
-        color: black;
+        color: rgb(12, 49, 73);
         font-size: 45px;
         display: flex;
         justify-content: center;
@@ -149,22 +151,57 @@
         border-radius: 4px;
         text-align: center;
         border: solid 1px white;
+        width: 80px;
         padding: 10px;
         box-shadow: 5px 5px #04104d;
+    }
+    .updatebtn:hover{
+      cursor:pointer
     }
     .deletebtn{
         background-color: #b42424;
         border-radius: 4px;
+        width: 80px;
         text-align: center;
         border: solid 1px white;
         padding: 10px;
         box-shadow: 5px 5px rgb(59, 15, 15);
+    }
+    .deletebtn:hover{
+      cursor:pointer
     }
     .navlink{
         background-color: #1e3a8a;
         border-radius: 4px;
         border: solid 1px white;
         padding: 10px;
+    }
+    .searchdiv{
+      display: inline-flex;
+      justify-content: center;
+      align-content: center;
+      width: 100%;
+    }
+    .searchbtn{
+      background-color: #1c2760;
+      color:white;
+      width:100px;
+      height: 40px;
+      box-shadow: 5px 5px #0a133f;
+      border-radius: 10px;
+      border: solid 1px #0a133f;
+    }
+    .searchbox{
+      background-color: #727eb6;
+      color:white;
+      width:560px;
+      height: 30px;
+      padding:10px;
+      border-radius: 10px;
+      border: solid 1px #3e4668;
+    }
+    .searchbtn:hover{
+      cursor: pointer;
     }
   </style>
 </head>
@@ -187,6 +224,15 @@
 
     <main>
         <h3 class="season">Season <%= season %> Players</h3> 
+        <% if(search==true){ %>
+        <h5 class="season">Results for players with name containing: <%= name %></h5> 
+        <%} %>
+        <div class="searchdiv">
+          <form action="/search/players/<%= season %>/<%= seasonid %>" method="GET">
+            <input class="searchbox" type="text" id="name" name="name" value="" placeholder="Search for player name...">
+            <input class="searchbtn" type="submit" value="search">
+          </form>
+        </div>
      <table id="playersTable">
 
       <thead>
@@ -208,8 +254,8 @@
             <td onclick="location.href='/players/<%= seasonid %>/<%= player.player_id %>'"><%= player.real_name || "-" %></td>
             <td onclick="location.href='/players/<%= seasonid %>/<%= player.player_id %>'"><%= player.country %></td>
             <td onclick="location.href='/players/<%= seasonid %>/<%= player.player_id %>'"><%= player.position %></td>
-            <td><div class="updatebtn"><a>Update</a></div></td>
-            <td><div class="deletebtn"><a>Delete</a></div></td>
+            <td><button class="updatebtn">Update</button></td>
+            <td><form action="/delete/players/<%= season %>/<%= seasonid %>/<%= player.player_id %>" method="POST"><button type="submit" onclick="return confirm('Are your sure you want to delete <%= player.name %>?')" class="deletebtn">Delete</button></td>
           </tr>
         <% }) %>
 

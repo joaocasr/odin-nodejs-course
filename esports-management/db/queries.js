@@ -74,7 +74,25 @@ const db = {
             WHERE pt.season_id = ${seasonid} AND p.player_id = ${playerid}
             LIMIT 1;`);
         return rows;
-    }
+    },
+    getPlayersByName: async (seasonid,name) => {
+        const { rows } = await pool.query(`SELECT 
+            p.player_id,
+            p.name, 
+            p.real_name,
+            p.country,
+            p.position FROM players p
+            JOIN player_teams pt ON p.player_id = pt.player_id
+            WHERE pt.season_id = ${seasonid} AND LOWER(p.name) LIKE LOWER('%${name}%');`);
+        return rows;
+    },
+    deletePlayer: async (seasonid,idplayer) => {
+        const { rows } = await pool.query(`
+            DELETE FROM player_teams pt WHERE pt.player_id=${idplayer} AND pt.season_id=${seasonid};
+            DELETE FROM players p WHERE p.player_id=${idplayer};
+            `);
+        return rows;
+    },
 }
 
 export default db;

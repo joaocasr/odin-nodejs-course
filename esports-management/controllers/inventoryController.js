@@ -21,7 +21,7 @@ const inventoryController = {
   },
   getPlayers: async(res,season,seasonid)=>{
     const players = await db.getPlayers(seasonid)
-    res.render('players',{"players":players,"season":season,"seasonid":seasonid})
+    res.render('players',{"players":players,"season":season,"seasonid":seasonid,"search":false})
   }, 
   getPlayer: async(res,seasonid,playerid)=>{
     const players = await db.getPlayer(seasonid,playerid)
@@ -30,6 +30,13 @@ const inventoryController = {
   },
   getTeams: async(req,res)=>{
 
+  },
+  getPlayersByName: async(res,season,seasonid,name)=>{
+    const players = await db.getPlayersByName(seasonid,name)
+    res.render('players',{"players":players,"season":season,"seasonid":seasonid,"name":name,"search":true})
+  },
+  deletePlayer:async(res,season,seasonid,idplayer)=>{
+    const players = await db.deletePlayer(seasonid,idplayer)
   }
 }
 export default inventoryController;

@@ -17,5 +17,13 @@ inventoryRouter.get("/players/:seasonid/:idplayer", function(req,res){
     inventoryController.getPlayer(res,req.params.seasonid,req.params.idplayer)
 });
 
+inventoryRouter.get("/search/players/:season/:seasonid", function(req,res){
+    if(req.query.name) inventoryController.getPlayersByName(res,req.params.season,req.params.seasonid,req.query.name)
+});
+
+inventoryRouter.post("/delete/players/:season/:idseason/:idplayer", async function(req,res){
+    await inventoryController.deletePlayer(res,req.params.season,req.params.idseason,req.params.idplayer);
+    res.redirect('/players/seasons/'+req.params.season+"/"+req.params.idseason)
+})
 
 export default inventoryRouter;
