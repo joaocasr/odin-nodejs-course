@@ -244,6 +244,10 @@
 
         </div>
     <% } %>
+    <% if(groups==null || (groups!=null && Object.keys(groups).length === 0)){%>
+        <h4>No groups found.</h4>
+        <a href="/add/groups/">Click here to add group.</a> 
+    <% } %>
     <% if(games){ %>
       <div class="placards-grid">
 

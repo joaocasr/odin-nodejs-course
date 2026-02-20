@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+    body { margin: 0; font-family: Arial, sans-serif; background-color: #2519ae87; }
+
+    nav {
+      background-color: #1c2760; 
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.8rem 2rem;
+    }
+    nav .logo { font-size: 1rem; font-weight: bold; }
+    .logoimg{
+      display: block;
+    }
+    .ucllogo{
+      margin: 10px;
+    }
+    nav ul { list-style: none; display: flex; gap: 1rem; margin: 0; padding: 0; }
+    nav ul li a { color: white; text-decoration: none; font-weight: 500; }
+    nav ul li a:hover { text-decoration: underline; }
+
+.card {
+  width: 420px;
+  max-width: 95%;
+  padding: 40px;
+  border-radius: 18px;
+  background: rgba(10, 20, 50, 0.85);
+  backdrop-filter: blur(10px);
+  box-shadow:
+    0 0 30px rgba(0, 180, 255, 0.25),
+    0 15px 40px rgba(0, 0, 0, 0.6);
+}
+
+h1 {
+  margin: 0 0 30px;
+  text-align: center;
+  font-weight: 600;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  opacity: 0.85;
+}
+
+select {
+  width: 100%;
+  padding: 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.05);
+  color: white;
+  font-size: 15px;
+  margin-bottom: 25px;
+}
+
+select:focus {
+  border-color: #00b4ff;
+  box-shadow: 0 0 10px rgba(0, 180, 255, 0.4);
+  outline: none;
+}
+
+button {
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  background: linear-gradient(135deg, #6d79bd, #09086d);
+  color: white;
+}
+.create-card {
+  display: inline-flex;
+  align-items: center;
+  gap: 30px;
+  align-content: center;
+  justify-content: center;
+  background: #37498b;
+  padding: 30px;
+  width: 50%;
+  justify-items: center;
+  margin:30px;
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  margin-bottom: 40px;
+  color:white;
+}
+
+button:hover {
+  transform: translateY(-2px);
+}
+
+.hint {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 13px;
+  opacity: 0.7;
+}
+footer {
+      background-color: #04104d;
+      color: white;
+      text-align: center;
+      padding: 2rem 1rem;
+      margin-top: 2rem;
+      background-image: url('/logos/logofooter.png');
+      position: fixed;
+      left: 0px;
+      bottom: 0px;
+      width: 100%;
+
+    }
+    
+    footer a { color: #f5c518; text-decoration: none; margin: 0 0.5rem; }
+    footer a:hover { text-decoration: underline; }
+
+        </style>
+    </head>
+    <body>
+
+
+        <nav>
+    <div class="logoimg">
+    <div class="logo">Champions League Inventory</div>
+    <div>
+      <img class="ucllogo" width="80px" height="80px" src="/logos/logo.png"/>
+    </div>
+    </div>
+    <ul>
+      <div class="navlink"><li><a href="/">Home</a></li></div>
+    </ul>
+  </nav>
+  <div class="create-card">
+    <form action="/create/season" method="POST"> 
+    <label for="season_year">Season Year</label> 
+    <select id="season_year" name="season_year" required> 
+        <% seasons.forEach(season => { %>
+            <option value="<%= season %>"> <%= season %> </option>
+         <% }) %> 
+    </select>
+         
+     <button type="submit"> Create Season </button> 
+    </form>
+    
+  </div>
+  
+  <footer>
+    <p>&copy; 2026 Champions League Inventory. All Rights Reserved.</p>
+    <p>
+      <a href="/about">About</a> |
+      <a href="/contact">Contact</a> |
+      <a href="/privacy">Privacy Policy</a>
+    </p>
+  </footer>
+</body>
+</html>

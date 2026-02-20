@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Group Allocation</title>
+
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #0b1d3a;
+    color: white;
+    padding: 30px;
+  }
+
+  h1 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .top-controls {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  .groups-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+
+  .group-card {
+    background: #132c5a;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  }
+
+  .group-card h2 {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 10px;
+    font-size: 12px;
+  }
+
+  th, td {
+    padding: 6px;
+    border-bottom: 1px solid #2a4c8a;
+    text-align: center;
+  }
+
+  th:first-child,
+  td:first-child {
+    text-align: left;
+  }
+
+  .add-team {
+    display: flex;
+    gap: 5px;
+  }
+
+  select {
+    flex: 1;
+    padding: 5px;
+    border-radius: 5px;
+    border: none;
+  }
+
+  button {
+    background: #00b4ff;
+    border: none;
+    color: white;
+    padding: 6px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background: #0090cc;
+  }
+</style>
+
+</head>
+
+<body>
+
+<h1>Allocate Teams to Groups</h1>
+
+<div class="top-controls">
+  <button onclick="createGroup()">+ Add Group</button>
+</div>
+
+<div class="groups-container" id="groupsContainer"></div>
+
+<script>
+
+const allTeams = <%- JSON.stringify(teams) %>;
+
+let groupCounter = -1;
+let groupNames = ['A','B','C','D','E','F','G','H'];
+let assignedTeams = new Set();
+
+// Stores stats per group
+const groupData = {};
+
+function createGroup() {
+  if (groupCounter === 7) return;
+
+  groupCounter++;
+  const groupId = groupNames[groupCounter];
+
+  groupData[groupId] = [];
+
+  const card = document.createElement("div");
+  card.className = "group-card";
+  card.id = `group-${groupId}`;
+
+  card.innerHTML = `
+    <h2>Group ${groupId}</h2>
+
+    <table id="table-${groupId}">
+      <thead>
+        <tr>
+          <th>Team</th>
+          <th>MP</th>
+          <th>W</th>
+          <th>D</th>
+          <th>L</th>
+          <th>GF</th>
+          <th>GA</th>
+          <th>PTS</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <div class="add-team">
+      <select id="select-${groupId}">
+        ${getTeamOptions()}
+      </select>
+      <button onclick="addTeam('${groupId}')">+</button>
+    </div>
+  `;
+
+  document.getElementById("groupsContainer").appendChild(card);
+}
+
+function getTeamOptions() {
+  return allTeams
+    .filter(team => !assignedTeams.has(team.teamid))
+    .map(team => `
+      <option value="${team.teamid}">
+        ${team.teamname}
+      </option>
+    `)
+    .join("");
+}
+
+async function addTeam(groupId) {
+  const select = document.getElementById(`select-${groupId}`);
+  if (!select.value) return;
+
+  const teamId = Number(select.value);
+  const teamName = select.options[select.selectedIndex].text;
+
+  assignedTeams.add(teamId);
+
+  // Create default stats object
+  const teamStats = {
+    id: teamId,
+    name: teamName,
+    mp: 0,
+    w: 0,
+    d: 0,
+    l: 0,
+    gf: 0,
+    ga: 0,
+    pts: 0
+  };
+
+  groupData[groupId].push(teamStats);
+
+  // Add row to UI
+  const table = document.querySelector(`#table-${groupId} tbody`);
+  const row = document.createElement("tr");
+
+  row.innerHTML = `
+  <td>${teamName}</td>
+  ${createStatInput(groupId, teamId, "mp")}
+  ${createStatInput(groupId, teamId, "w")}
+  ${createStatInput(groupId, teamId, "d")}
+  ${createStatInput(groupId, teamId, "l")}
+  ${createStatInput(groupId, teamId, "gf")}
+  ${createStatInput(groupId, teamId, "ga")}
+  <td id="pts-${groupId}-${teamId}">0</td>
+  `;
+  table.appendChild(row);
+
+  refreshDropdowns();
+
+  try {
+    await fetch("/groups/add-team", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ groupId, teamId })
+    });
+  } catch (err) {
+    alert("Error adding team");
+    console.error(err);
+  }
+}
+
+function refreshDropdowns() {
+  document.querySelectorAll("select").forEach(select => {
+    select.innerHTML = getTeamOptions();
+  });
+}
+
+function createStatInput(groupId, teamId, stat) {
+  return `
+    <td>
+      <input
+        type="number"
+        min="0"
+        value="0"
+        style="width:50px"
+        onchange="updateStats('${groupId}', ${teamId}, '${stat}', this.value)"
+      >
+    </td>
+  `;
+}
+
+function updateStats(groupId, teamId, stat, value) {
+  const team = groupData[groupId].find(t => t.id === teamId);
+  if (!team) return;
+
+  team[stat] = Number(value);
+
+  recalcTeam(groupId, teamId);
+}
+
+function recalcTeam(groupId, teamId) {
+  const team = groupData[groupId].find(t => t.id === teamId);
+  if (!team) return;
+
+  const pts = team.w * 3 + team.d;
+
+  team.pts = pts;
+
+  document.getElementById(`pts-${groupId}-${teamId}`).innerText = pts;
+}
+
+</script>
+
+</body>
+</html>

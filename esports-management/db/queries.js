@@ -93,6 +93,82 @@ const db = {
             `);
         return rows;
     },
+    createPlayer: async (name,realname,country,position,goals,matches,assists,yellows,reds,teamid,seasonid) => {
+        const { rows } = await pool.query(`
+            INSERT INTO players (name, real_name, country, position, goals, matches, assists, yellows, reds) VALUES
+            ('${name}','${realname}','${country}','${position}',${goals},${matches},${assists},${yellows},${reds});
+            INSERT INTO player_teams (player_id,team_id,season_id) VALUES
+            ((select p.player_id 
+                from player p 
+                order by p.player_id desc
+                limit 1
+            )+1,
+            ${teamid},
+            ${seasonid}); 
+            `);
+        return rows;
+    },
+    getTeamNamesIds: async (seasonid) =>{
+        const {rows} = await pool.query(`
+            SELECT
+            t.name AS teamname,
+            t.team_id AS teamid
+            FROM groups g
+        JOIN group_teams gt ON g.group_id = gt.group_id
+        JOIN teams t ON gt.team_id = t.team_id
+        WHERE g.season_id = ${seasonid};`)
+        return rows;
+    },
+    getAllTeams: async () =>{
+        const {rows} = await pool.query(`
+            SELECT
+            t.name AS teamname,
+            t.team_id AS teamid
+            FROM teams t;`)
+        return rows;
+    },
+    getAllTeamsInfo:async () =>{
+        const {rows} = await pool.query(`
+            SELECT * FROM teams t;`)
+        return rows;
+    },
+    getAvailableSeasons: async () =>{
+        let allDates = [];
+        for(let d = 1955; d<new Date().getFullYear();d++){
+            allDates.push(d+"-"+(d+1))
+        }
+        const {rows} = await pool.query(`
+            SELECT
+            s.season_year
+            FROM seasons s;`)
+        let availableDates = allDates;
+        for(let j = 0; j<rows.length;j++){
+            let value = rows[j].season_year;
+            availableDates = availableDates.filter(function(item) {
+                return item !== value
+            })
+        }
+        return availableDates.reverse();
+    },
+    addSeason: async (season) =>{
+        const {rows} = await pool.query(`INSERT INTO seasons (season_year) VALUES ('${season}');`)
+        console.log(rows)
+        return rows;
+    },
+    addTeam: async (name,country,year) =>{
+        const {rows} = await pool.query(`
+            INSERT INTO teams (name, country, founded_year) VALUES
+            ('${name}','${country}',${year});
+            `)
+        return rows;
+    },
+    getNextTeamId: async () =>{
+        const {rows} = await pool.query(`SELECT t.team_id from teams t ORDER BY t.team_id desc LIMIT 1;`)
+        let id = -1;
+        if(rows.length>0) id = rows[0].team_id
+        id+=1
+        return id;
+    }
 }
 
 export default db;

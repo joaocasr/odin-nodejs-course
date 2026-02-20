@@ -60,6 +60,9 @@
         border: solid 1px white;
         padding: 10px;
     }
+    .addseason{
+      font-size: 30px;
+    }
     footer {
       background-color: #04104d;
       color: white;
@@ -90,6 +93,7 @@
     </div>
     <ul>
       <div class="navlink"><li><a href="/">Home</a></li></div>
+      <div class="navlink"><li><a href="/teams">Teams</a></li></div>
     </ul>
   </nav>
 
@@ -99,7 +103,7 @@
     <p>Explore the history of the Champions League by choosing a season below:</p>
 
     <div class="season-selection">
-      <div class="season-card" onclick="location.href='/create/season'">
+      <div class="season-card" onclick="location.href='/add/season'">
           <h3 class="addseason">+ Create Season</h3>
         </div>
       <% seasons.forEach(season => { %>

@@ -180,7 +180,7 @@
       display: inline-flex;
       justify-content: center;
       align-content: center;
-      width: 100%;
+      width: 50%;
     }
     .searchbtn{
       background-color: #1c2760;
@@ -190,6 +190,28 @@
       box-shadow: 5px 5px #0a133f;
       border-radius: 10px;
       border: solid 1px #0a133f;
+    }
+    .addplayerbtn{
+      background-color: #a0abe2;
+      color:rgb(0, 0, 0);
+      width:240px;
+      font-weight: 800;
+      font-size: 16px;
+      height: 40px;
+      box-shadow: 5px 5px #0a133f;
+      border-radius: 10px;
+      border: solid 1px #0a133f;
+    }
+    .addplayerbtn:hover{
+      cursor:pointer;
+    }
+    .operations-section{
+      display: inline-flex;
+      width: 100%;
+      justify-content: center;
+    }
+    .adddiv{
+      display: inline-flex;
     }
     .searchbox{
       background-color: #727eb6;
@@ -227,12 +249,20 @@
         <% if(search==true){ %>
         <h5 class="season">Results for players with name containing: <%= name %></h5> 
         <%} %>
-        <div class="searchdiv">
-          <form action="/search/players/<%= season %>/<%= seasonid %>" method="GET">
-            <input class="searchbox" type="text" id="name" name="name" value="" placeholder="Search for player name...">
-            <input class="searchbtn" type="submit" value="search">
-          </form>
+        <div class="operations-section">
+          <div class="searchdiv">
+            <form action="/search/players/<%= season %>/<%= seasonid %>" method="GET">
+              <input class="searchbox" type="text" id="name" name="name" value="" placeholder="Search for player name...">
+              <input class="searchbtn" type="submit" value="search">
+            </form>
+          </div>
+          <div class="adddiv">
+            <form action="" method="GET">
+              <input class="addplayerbtn" type="submit" value="+ Add Player">
+            </form>
+          </div>
         </div>
+        
      <table id="playersTable">
 
       <thead>

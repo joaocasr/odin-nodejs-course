@@ -13,6 +13,7 @@ const inventoryController = {
       if(allgroups[team.group_name] !== undefined) allgroups[team.group_name].push(team)
       else allgroups[team.group_name] = [team]
     })
+    console.log(allgroups)
     res.render('groups',{"season":season,"seasonid":seasonid,"groups":allgroups, "games": null, "phase": 0})
   },
   getknockoutGames: async(res,season,seasonid,phase)=>{
@@ -29,6 +30,8 @@ const inventoryController = {
     res.render('playerdetails',{"player":players[0],"isocode":countryToAlpha2(players[0].country).toLowerCase()})
   },
   getTeams: async(req,res)=>{
+    const teams = await db.getAllTeamsInfo()
+    res.render('teams',{"teams":teams})
 
   },
   getPlayersByName: async(res,season,seasonid,name)=>{
@@ -37,6 +40,30 @@ const inventoryController = {
   },
   deletePlayer:async(res,season,seasonid,idplayer)=>{
     const players = await db.deletePlayer(seasonid,idplayer)
+  },
+  addSeason: async(req,res) =>{
+    const seasons = await db.getAvailableSeasons()
+    res.render('create-season.ejs',{"seasons":seasons})
+  },
+  createSeason: async(req,res,season) =>{
+    await db.addSeason(season)
+  },
+  addGroups: async(req,res) =>{
+    const teams = await db.getAllTeams()
+    console.log(teams)
+    res.render('allocate-groups.ejs',{"teams":teams})
+  },
+  addTeams: async(req,res) =>{
+    const teamid = await db.getNextTeamId()
+    console.log(teamid)
+    res.render('create-team.ejs',{"teamid":teamid})
+  },
+  createTeam: async(req,res) =>{
+    await db.addTeam(req.body.name,req.body.country,req.body.year)
+    const teams = await db.getAllTeamsInfo()
+    res.render('teams',{"teams":teams})
   }
+
+
 }
 export default inventoryController;
