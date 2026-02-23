@@ -167,6 +167,19 @@
         width:35px;
         margin:4px;
     }
+    .addgroupbtn{
+        color: white;
+        background-color: #142a5c;
+        width: 180px;
+        border: 1px aliceblue;
+        border-radius: 10px;
+        font-size: 16px;
+        height: 50px;
+        box-shadow: 2px 2px #372c2c;
+    }
+    .addgroupbtn:hover{
+        cursor: pointer;
+    }
     .navlink{
         background-color: #1e3a8a;
         border-radius: 4px;
@@ -187,7 +200,6 @@
     </div>
     <ul>
       <div class="navlink"><li><a href="/">Home</a></li></div>
-      <div class="navlink"><li><a href="/teams">Teams</a></li></div>
       <div class="navlink"><li><a href="/players/seasons/<%= season %>/<%= seasonid %>">Players</a></li></div>
     </ul>
   </nav>
@@ -196,6 +208,12 @@
 
     <main>
     <h3 class="season">Season <%= season %></h3> 
+     <% if( groups==undefined || groups==null || (groups!=null && Object.keys(groups).length == 0)){ %>
+        <button class="addgroupbtn" onclick="location.href='/add/groups/<%= seasonid %>'">+ Add Group</button> 
+    <% } else { %>    
+        <button class="addgroupbtn" onclick="location.href='/update/groups/<%= seasonid %>'">+ Update Groups</button> 
+    <% } %>
+    
     <% if(groups){ %>
 
         <div class="groups-container">
@@ -244,10 +262,7 @@
 
         </div>
     <% } %>
-    <% if(groups==null || (groups!=null && Object.keys(groups).length === 0)){%>
-        <h4>No groups found.</h4>
-        <a href="/add/groups/">Click here to add group.</a> 
-    <% } %>
+   
     <% if(games){ %>
       <div class="placards-grid">
 

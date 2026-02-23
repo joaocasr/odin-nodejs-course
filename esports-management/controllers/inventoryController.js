@@ -13,7 +13,6 @@ const inventoryController = {
       if(allgroups[team.group_name] !== undefined) allgroups[team.group_name].push(team)
       else allgroups[team.group_name] = [team]
     })
-    console.log(allgroups)
     res.render('groups',{"season":season,"seasonid":seasonid,"groups":allgroups, "games": null, "phase": 0})
   },
   getknockoutGames: async(res,season,seasonid,phase)=>{
@@ -26,7 +25,6 @@ const inventoryController = {
   }, 
   getPlayer: async(res,seasonid,playerid)=>{
     const players = await db.getPlayer(seasonid,playerid)
-    console.log(players[0])
     res.render('playerdetails',{"player":players[0],"isocode":countryToAlpha2(players[0].country).toLowerCase()})
   },
   getTeams: async(req,res)=>{
@@ -48,14 +46,33 @@ const inventoryController = {
   createSeason: async(req,res,season) =>{
     await db.addSeason(season)
   },
-  addGroups: async(req,res) =>{
+  addGroups: async(req,res,seasonid) =>{
     const teams = await db.getAllTeams()
-    console.log(teams)
-    res.render('allocate-groups.ejs',{"teams":teams})
+    res.render('allocate-groups.ejs',{"teams":teams,"seasonid":seasonid,"groupsToUpdate":null})
+  },
+  insertGroup: async(req,res) =>{
+    for (const groupName in req.body["group"]) {
+      await db.insertGroup(groupName, req.body["group"][groupName]);
+    }
+    const seasons = await db.getSeasons()
+    res.render('seasons', {"seasons":seasons})
+  },
+  updateGroups: async(req,res,seasonid) =>{
+    console.log("aqui")
+    const groups = await db.getSeasonGroups(seasonid)
+    const teams = await db.getAllTeams()
+    let allgroups = {}
+    groups.forEach((team)=>{
+      if(allgroups[team.group_name] !== undefined) allgroups[team.group_name].push(team)
+      else allgroups[team.group_name] = [team]
+    })
+    let groupNames = Object.keys(allgroups);
+    let groupCounter = groupNames.length
+    console.log(allgroups)
+    res.render('allocate-groups.ejs',{"groupsToUpdate":allgroups,"allteams":teams,"teams":teams,"seasonid":seasonid})
   },
   addTeams: async(req,res) =>{
     const teamid = await db.getNextTeamId()
-    console.log(teamid)
     res.render('create-team.ejs',{"teamid":teamid})
   },
   createTeam: async(req,res) =>{

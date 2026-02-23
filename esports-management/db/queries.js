@@ -10,6 +10,7 @@ const db = {
             g.group_id,
             g.group_name,
             t.team_id,
+            gst.played,
             gst.wins,
             gst.draws,
             gst.losses,
@@ -168,6 +169,50 @@ const db = {
         if(rows.length>0) id = rows[0].team_id
         id+=1
         return id;
+    },
+    insertGroup: async (groupName, teams) => {
+        if (!teams || teams.length === 0) return;
+        console.log(teams)
+        const seasonId = teams[0].seasonid; // all teams in the group have same season
+
+        try {
+            // Begin transaction
+            await pool.query('BEGIN');
+
+            // Insert group and get its ID
+            const groupRes = await pool.query(
+            `INSERT INTO groups (season_id, group_name) 
+            VALUES ($1, $2) 
+            RETURNING group_id`,
+            [seasonId, groupName]
+            );
+            const groupId = groupRes.rows[0].group_id;
+
+            // Insert into group_teams
+            const groupTeamsValues = teams.map((t, i) => `(${groupId}, ${t.teamid})`).join(', ');
+            await pool.query(`
+            INSERT INTO group_teams (group_id, team_id) VALUES ${groupTeamsValues}
+            `);
+
+            // Insert into group_standings
+            const standingsValues = teams.map(t =>
+            `(${groupId}, ${t.teamid}, ${t.mp}, ${t.w}, ${t.d}, ${t.l}, ${t.gf}, ${t.ga}, ${Number(t.w * 3) + Number(t.d)})`
+            ).join(', ');
+
+            await pool.query(`
+            INSERT INTO group_standings 
+                (group_id, team_id, played, wins, draws, losses, goals_for, goals_against, points) 
+            VALUES ${standingsValues}
+            `);
+
+            // Commit transaction
+            await pool.query('COMMIT');
+            console.log(`Group ${groupName} inserted successfully!`);
+        } catch (err) {
+            await pool.query('ROLLBACK');
+            console.error('Error inserting group:', err);
+            throw err;
+        }
     }
 }
 

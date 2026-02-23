@@ -45,7 +45,15 @@ inventoryRouter.post("/create/season", async function(req,res){
     await inventoryController.createSeason(req,res,req.body.season_year);
     res.redirect("/")
 });
-inventoryRouter.get("/add/groups/", inventoryController.addGroups);
+inventoryRouter.get("/add/groups/:seasonid", function(req,res){
+    inventoryController.addGroups(req,res,req.params.seasonid)
+});
+
+
+inventoryRouter.get("/update/groups/:seasonid", function(req,res){
+    inventoryController.updateGroups(req,res,req.params.seasonid)
+});
+inventoryRouter.post("/add/group/", inventoryController.insertGroup);
 inventoryRouter.get("/add/team/", inventoryController.addTeams);
 inventoryRouter.post("/create/team/",upload.array("teams"),inventoryController.createTeam);
 

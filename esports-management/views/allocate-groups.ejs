@@ -6,12 +6,29 @@
 <title>Group Allocation</title>
 
 <style>
-  body {
-    font-family: Arial, sans-serif;
-    background: #0b1d3a;
-    color: white;
-    padding: 30px;
+  body { margin: 0; font-family: Arial, sans-serif; background-color: #2519ae87; }
+
+  main{
+    margin:10px;
   }
+  nav {
+      background-color: #1c2760; 
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.8rem 2rem;
+  }
+  nav .logo { font-size: 1rem; font-weight: bold; }
+  .logoimg{
+    display: block;
+  }
+  .ucllogo{
+    margin: 10px;
+  }
+  nav ul { list-style: none; display: flex; gap: 1rem; margin: 0; padding: 0; }
+  nav ul li a { color: white; text-decoration: none; font-weight: 500; }
+  nav ul li a:hover { text-decoration: underline; }
 
   h1 {
     text-align: center;
@@ -33,6 +50,7 @@
     background: #132c5a;
     border-radius: 10px;
     padding: 15px;
+    color:white;
     box-shadow: 0 4px 10px rgba(0,0,0,0.3);
   }
 
@@ -72,7 +90,7 @@
   }
 
   button {
-    background: #00b4ff;
+    background: #3d51b8;
     border: none;
     color: white;
     padding: 6px 10px;
@@ -81,24 +99,154 @@
   }
 
   button:hover {
-    background: #0090cc;
+    background: #171d57;
+  }
+  .navlink{
+        background-color: #1e3a8a;
+        border-radius: 4px;
+        border: solid 1px white;
+        padding: 10px;
+  }
+  .addgroupbtn{
+    display: inline-flex;
+    justify-content: center;
+    align-content: center;
+    width: 94%;
+    margin-bottom: 10px;
   }
 </style>
 
 </head>
 
+<nav>
+    <div class="logoimg">
+    <div class="logo">Champions League Inventory</div>
+    <div>
+      <img class="ucllogo" width="80px" height="80px" src="/logos/logo.png"/>
+    </div>
+    </div>
+    <ul>
+      <div class="navlink"><li><a href="/">Home</a></li></div>
+    </ul>
+</nav>
+
 <body>
 
 <h1>Allocate Teams to Groups</h1>
-
+<main>
 <div class="top-controls">
   <button onclick="createGroup()">+ Add Group</button>
 </div>
 
-<div class="groups-container" id="groupsContainer"></div>
+<div class="groups-container" id="groupsContainer">
+      <% if(groupsToUpdate){ %>
+          <% Object.entries(groupsToUpdate).forEach(([groupName, teams]) => { %>
+
+  <div class="group-card">
+        <h2>Group <%= groupName %></h2>
+
+        <form id="form-table-<%= teams[0].group_id %>" action="/add/group" method="POST">
+    <table id="table-<%= teams[0].group_id %>">
+      <thead>
+        <tr>
+          <th>Team</th>
+          <th>MP</th>
+          <th>W</th>
+          <th>D</th>
+          <th>L</th>
+          <th>GF</th>
+          <th>GA</th>
+          <th>PTS</th>
+        </tr>
+       </thead> 
+        <tbody>
+                <% teams
+                    .sort((a, b) => b.points - a.points)
+                    .forEach((team, index) => { %>
+        <tr>
+            <td>
+               <select id="select-<%= index %>">
+                  <% allteams.forEach((select_team, index) => { %>
+                          <% if(team.team_name == select_team.teamname){ %>
+                            <option selected="selected" value="<%= select_team.teamid %>">
+                              <%= select_team.teamname %>
+                            </option>
+                         <% } else { %>
+                          <option value="<%= select_team.teamid %>">
+                              <%= select_team.teamname %>
+                            </option>
+                         <% } %>
+                    <% }) %>
+
+              </select>
+            </td>
+            <td>
+              <input
+                type="number"
+                min="0"
+                value="<%= team.played %>"
+                style="width:50px"
+              >
+            </td>
+            <td>
+              <input
+                type="number"
+                min="0"
+                value="<%= team.wins %>"
+                style="width:50px"
+              >
+            </td>
+            <td>
+              <input
+                type="number"
+                min="0"
+                value="<%= team.draws %>"
+                style="width:50px"
+              >
+            </td>
+            <td>
+              <input
+                type="number"
+                min="0"
+                value="<%= team.losses %>"
+                style="width:50px"
+              >
+            </td>
+            <td>
+              <input
+                type="number"
+                min="0"
+                value="<%= team.goals_against %>"
+                style="width:50px"
+              >
+            </td>
+            <td>
+              <input
+                type="number"
+                min="0"
+                value="<%= team.points %>"
+                style="width:50px"
+              >
+            </td>
+        </tr>
+          <% }) %>
+        </tbody>
+            <button class="addgroupbtn" type="submit">Update Group</button>
+
+    </table>
+            </form>
+            <div class="add-team-select">
+                  <select id="select-<%= teams[0].group_id %>">
+                    getTeamOptions()
+                  </select>
+                  <button type="button" onclick="addTeam('<%= teams[0].group_id %>')">+</button>
+            </div>
+            <% }) %>
+            <% } %>
+  </div> 
+</div>
 
 <script>
-
 const allTeams = <%- JSON.stringify(teams) %>;
 
 let groupCounter = -1;
@@ -123,6 +271,7 @@ function createGroup() {
   card.innerHTML = `
     <h2>Group ${groupId}</h2>
 
+    <form id="form-table-${groupId}" action="/add/group" method="POST">
     <table id="table-${groupId}">
       <thead>
         <tr>
@@ -138,12 +287,14 @@ function createGroup() {
       </thead>
       <tbody></tbody>
     </table>
+    <button class="addgroupbtn" type="submit">Add Group</button>
+    </form>
 
     <div class="add-team">
       <select id="select-${groupId}">
         ${getTeamOptions()}
       </select>
-      <button onclick="addTeam('${groupId}')">+</button>
+      <button type="button" onclick="addTeam('${groupId}')">+</button>
     </div>
   `;
 
@@ -191,6 +342,8 @@ async function addTeam(groupId) {
 
   row.innerHTML = `
   <td>${teamName}</td>
+  ${createStatInput(groupId, teamId, "seasonid")}
+  ${createStatInput(groupId, teamId, "teamid")}
   ${createStatInput(groupId, teamId, "mp")}
   ${createStatInput(groupId, teamId, "w")}
   ${createStatInput(groupId, teamId, "d")}
@@ -202,17 +355,6 @@ async function addTeam(groupId) {
   table.appendChild(row);
 
   refreshDropdowns();
-
-  try {
-    await fetch("/groups/add-team", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ groupId, teamId })
-    });
-  } catch (err) {
-    alert("Error adding team");
-    console.error(err);
-  }
 }
 
 function refreshDropdowns() {
@@ -222,12 +364,31 @@ function refreshDropdowns() {
 }
 
 function createStatInput(groupId, teamId, stat) {
+  if(stat=="teamid") return `
+    <td style="width:0px;display: none;visibility: none;">
+      <input
+        type="hidden"
+        value="${teamId}"
+        name="group[${groupId}][${teamId}][${stat}]" 
+        style="width:0px;display: none;visibility: none;">
+    </td>
+  `;
+ if(stat=="seasonid") return `
+    <td style="width:0px;display: none;visibility: none;">
+      <input
+        type="hidden"
+        value="<%= seasonid %>"
+        name="group[${groupId}][${teamId}][${stat}]" 
+        style="width:0px;display: none;visibility: none;">
+    </td>
+  `;
   return `
     <td>
       <input
         type="number"
         min="0"
         value="0"
+        name="group[${groupId}][${teamId}][${stat}]" 
         style="width:50px"
         onchange="updateStats('${groupId}', ${teamId}, '${stat}', this.value)"
       >
@@ -257,5 +418,6 @@ function recalcTeam(groupId, teamId) {
 
 </script>
 
+</main>
 </body>
 </html>
