@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Create Club</title>
+
+<style>
+  body { margin: 0; font-family: Arial, sans-serif; background-color: #2519ae87; }
+
+
+  h1 {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+    .navlink{
+        background-color: #1e3a8a;
+        border-radius: 4px;
+        border: solid 1px white;
+        padding: 10px;
+    }
+    nav {
+      background-color: #1c2760; 
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.8rem 2rem;
+    }
+    nav .logo { font-size: 1rem; font-weight: bold; }
+    .logoimg{
+      display: block;
+    }
+    .ucllogo{
+      margin: 10px;
+    }
+    nav ul { list-style: none; display: flex; gap: 1rem; margin: 0; padding: 0; }
+    nav ul li a { color: white; text-decoration: none; font-weight: 500; }
+    nav ul li a:hover { text-decoration: underline; }
+
+    form {
+    max-width: 500px;
+    margin: 0 auto;
+    background: #132c5a;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  }
+
+  label {
+    color:white;
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+  }
+
+  input[type="text"],
+  input[type="file"],
+  select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    border: none;
+    font-size: 14px;
+  }
+
+  button {
+    width: 100%;
+    background: #00b4ff;
+    border: none;
+    color: white;
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background: #0090cc;
+  }
+    footer {
+      background-color: #04104d;
+      color: white;
+      text-align: center;
+      padding: 2rem 1rem;
+      margin-top: 2rem;
+      background-image: url('/logos/logofooter.png');
+      position: fixed;
+      left: 0px;
+      bottom: 0px;
+      width: 100%;
+      clear: both;
+      position: relative;
+
+    }
+    footer a { color: #f5c518; text-decoration: none; margin: 0 0.5rem; }
+    footer a:hover { text-decoration: underline; }
+  
+  .hidefields{
+    display: none;
+    visibility: hidden;
+  }
+  .showfields{
+    display: inline;
+    visibility: visible;
+  }
+  .fileinput{
+    color:white;
+  }
+</style>
+</head>
+<body>
+ <nav>
+    <div class="logoimg">
+    <div class="logo">Champions League Inventory</div>
+    <div>
+      <img class="ucllogo" width="80px" height="80px" src="/logos/logo.png"/>
+    </div>
+    </div>
+    <ul>
+      <div class="navlink"><li><a href="/">Home</a></li></div>
+    </ul>
+  </nav>
+
+<h1>Create New Player </h1>
+
+<form action="/update/player" method="POST" enctype="multipart/form-data">
+
+    <label for="player">Player</label>
+    <select id="select-players" onchange="changePlayer(this.value)">
+    </select>
+    
+  <input type="text" name="playername" id="playername" placeholder="Enter Name">
+  <input type="text" class="hidefields" value="<%= current_id %>" name="playerid" id="playerid" required>
+
+  <select name="teamid" id="select-teams">
+  </select>
+  <input type="text" class="hidefields" value="<%= seasonid %>" name="seasonid" id="seasonid" required>
+
+  <label for="country">Country</label>
+  <input type="text" name="country" id="country" placeholder="Enter country" required>
+
+  <label for="position">Position</label>
+  <input type="text" name="position" id="position" placeholder="Insert position" required>
+
+  <label for="goals">Goals</label>
+  <input min="0" type="number" name="goals" id="goals" placeholder="Insert Goals" required>
+
+  <label for="matches">Matches</label>
+  <input min="0" type="number" name="matches" id="matches" placeholder="Insert Matches" required>
+
+  <label for="assists">Assists</label>
+  <input min="0" type="number" name="assists" id="assists" placeholder="Insert Assists" required>
+
+  <label for="yellows">Yellows</label>
+  <input min="0" type="number" name="yellows" id="yellows" placeholder="Insert Yellows" required>
+
+  <label for="reds">Reds</label>
+  <input min="0" type="number" name="reds" id="reds" placeholder="Insert Reds" required>
+
+  <label for="logo">Player Image</label>
+  <img id="playerimg" src="/players/profile.jpg" onerror="this.src = '/players/profile.jpg';"  width="100px"/>
+  <input class="fileinput" type="file" name="playerimage" id="playerimage" accept="image/*">
+
+  <button type="submit">Create Player</button>
+
+</form>
+<footer>
+    <p>&copy; 2026 Champions League Inventory. All Rights Reserved.</p>
+    <p>
+      <a href="/about">About</a> |
+      <a href="/contact">Contact</a> |
+      <a href="/privacy">Privacy Policy</a>
+    </p>
+  </footer>
+
+<script>
+let current_id =<%- JSON.stringify(current_id) %>;
+const players = <%- JSON.stringify(players) %>;
+const teams = <%- JSON.stringify(teams) %>;
+const logo = document.getElementById("playerimage")
+const playerimg = document.getElementById("playerimg")
+logo.onchange = evt => {
+  const [file] = logo.files
+  if (file) {
+    playerimg.src = URL.createObjectURL(file)
+  }
+}
+document.addEventListener("DOMContentLoaded", () => {
+  populatePlayerSelect()
+  populateTeamSelect()
+});
+
+function populatePlayerSelect() {
+  const select = document.getElementById("select-players")
+  var other = document.createElement("option");
+  other.innerHTML = "Other";
+  select.append(other);
+  players.forEach(player => {
+      var option = document.createElement("option");
+      option.innerHTML = player.name;
+      option.value = player.player_id;
+      select.append(option);
+    });
+}
+
+function populateTeamSelect() {
+  const select = document.getElementById("select-teams")
+  teams.forEach(team => {
+      var option = document.createElement("option");
+      option.innerHTML = team.teamname;
+      option.value = team.teamid;
+      select.append(option);
+    });
+}
+
+function changePlayer(value){
+  const name = document.getElementById("playername")
+  const playerimg = document.getElementById("playerimg")
+  const playerid = document.getElementById("playerid")
+  const select = document.getElementById("select-players")
+  if(value=='Other'){
+    name.classList.remove("showfields")
+    name.classList.add("showdfields")
+    playerimg.src = "/players/profile.jpg"
+    playerid.value = current_id;
+  }
+  else{
+    name.classList.remove("showfields")
+    name.classList.add("hidefields")
+    playerimg.src = `/players/player${value}.png`
+    playerid.value = value;
+    name.value= select.options[ select.selectedIndex ].innerHTML
+  }
+}
+</script>
+</body>
+</html>

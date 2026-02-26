@@ -5,12 +5,18 @@ import multer from "multer";
 
 const storage = multer.diskStorage({
   destination: function (req, file, callback) {
-    callback(null, "public/teams");
+    if(/^\/update\/player\/?$/.test(req.url)) callback(null, "public/players");
+    if(/^\/create\/player\/\d+$/.test(req.url)) callback(null, "public/teams");
   },
   filename: function (req, file, callback) {
     console.log(req.body)
-    const teamid = req.body.teamid
-    callback(null, `team${teamid}.png`);
+    if(req.body.team && req.body.teamid){
+        const teamid = req.body.teamid
+        callback(null, `team${teamid}.png`);
+    }
+    if(file.fieldname == "playerimage"){
+        callback(null, `player${req.body.playerid}.png`);
+    }
   },
 });
 
@@ -55,7 +61,14 @@ inventoryRouter.get("/update/groups/:seasonid", function(req,res){
 });
 inventoryRouter.post("/add/group/", inventoryController.insertGroup);
 inventoryRouter.get("/add/team/", inventoryController.addTeams);
-inventoryRouter.post("/create/team/",upload.array("teams"),inventoryController.createTeam);
+inventoryRouter.post("/create/team/",upload.single("teams"),inventoryController.createTeam);
+
+inventoryRouter.get("/create/player/:seasonid", function(req,res){
+    inventoryController.gotoCreatePage(req,res,req.params.seasonid)
+});
+inventoryRouter.post("/update/player/",upload.single("playerimage"),function(req,res){
+    inventoryController.createPlayer(req,res)
+});
 
 
 export default inventoryRouter;

@@ -78,7 +78,7 @@ CREATE TABLE knockout_matches (
 
 CREATE TABLE players (
     player_id SERIAL PRIMARY KEY,
-    name VARCHAR(50) NOT NULL UNIQUE,
+    name VARCHAR(50) NOT NULL,
     real_name VARCHAR(100),
     country VARCHAR(50),
     position VARCHAR(50),
@@ -93,7 +93,7 @@ CREATE TABLE player_teams (
     player_id INT REFERENCES players(player_id),
     team_id INT REFERENCES teams(team_id),
     season_id INT REFERENCES seasons(season_id),
-    PRIMARY KEY (player_id, season_id)
+    PRIMARY KEY (player_id, team_id, season_id)
 );
 `
 const population = `

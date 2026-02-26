@@ -257,9 +257,7 @@
             </form>
           </div>
           <div class="adddiv">
-            <form action="" method="GET">
-              <input class="addplayerbtn" type="submit" value="+ Add Player">
-            </form>
+              <button onclick="location.href='/create/player/<%= seasonid %>'" class="addplayerbtn">+ Add Player</button>
           </div>
         </div>
         
@@ -285,7 +283,10 @@
             <td onclick="location.href='/players/<%= seasonid %>/<%= player.player_id %>'"><%= player.country %></td>
             <td onclick="location.href='/players/<%= seasonid %>/<%= player.player_id %>'"><%= player.position %></td>
             <td><button class="updatebtn">Update</button></td>
-            <td><form action="/delete/players/<%= season %>/<%= seasonid %>/<%= player.player_id %>" method="POST"><button type="submit" onclick="return confirm('Are your sure you want to delete <%= player.name %>?')" class="deletebtn">Delete</button></td>
+            <td>
+              <form action="/delete/players/<%= season %>/<%= seasonid %>/<%= player.player_id %>" method="POST">
+                <button type="submit" onclick="return confirm('Are your sure you want to delete <%= player.name %>?')" class="deletebtn">Delete</button></td>
+              </form>
           </tr>
         <% }) %>
 

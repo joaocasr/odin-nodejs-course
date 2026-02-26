@@ -55,6 +55,13 @@ const db = {
             WHERE pt.season_id = ${seasonid};`);
         return rows;
     },
+    getPlayersNamesIds: async () => {
+        const { rows } = await pool.query(`SELECT 
+            p.player_id,
+            p.name FROM players p
+            order by p.player_id desc;`);
+        return rows;
+    },
     getPlayer: async (seasonid,playerid) => {
         const { rows } = await pool.query(`SELECT 
             p.player_id,
@@ -94,20 +101,34 @@ const db = {
             `);
         return rows;
     },
-    createPlayer: async (name,realname,country,position,goals,matches,assists,yellows,reds,teamid,seasonid) => {
-        const { rows } = await pool.query(`
+    createPlayer: async (name,realname,country,position,goals,matches,assists,yellows,reds,playerid,teamid,seasonid) => {
+         try {
+            // Begin transaction
+            await pool.query('BEGIN');
+            await pool.query(`
             INSERT INTO players (name, real_name, country, position, goals, matches, assists, yellows, reds) VALUES
-            ('${name}','${realname}','${country}','${position}',${goals},${matches},${assists},${yellows},${reds});
+            ('${name}','${realname}','${country}','${position}',${goals},${matches},${assists},${yellows},${reds})
+            ON CONFLICT (player_id)
+            DO UPDATE SET
+                name = EXCLUDED.name,
+                real_name = EXCLUDED.real_name,
+                country = EXCLUDED.country,
+                position = EXCLUDED.position,
+                goals = EXCLUDED.goals,
+                matches = EXCLUDED.matches,
+                assists = EXCLUDED.assists,
+                yellows = EXCLUDED.yellows,
+                reds = EXCLUDED.reds;`);
+            await pool.query(`
             INSERT INTO player_teams (player_id,team_id,season_id) VALUES
-            ((select p.player_id 
-                from player p 
-                order by p.player_id desc
-                limit 1
-            )+1,
-            ${teamid},
-            ${seasonid}); 
+            (${playerid},${teamid},${seasonid}); 
             `);
-        return rows;
+            await pool.query('COMMIT');
+        } catch (err) {
+            await pool.query('ROLLBACK');
+            console.error('Error inserting group:', err);
+            throw err;
+        }        
     },
     getTeamNamesIds: async (seasonid) =>{
         const {rows} = await pool.query(`
@@ -170,7 +191,7 @@ const db = {
         id+=1
         return id;
     },
-    insertGroup: async (groupName, teams) => {
+    insertUpdateGroup: async (groupName, teams) => {
         if (!teams || teams.length === 0) return;
         console.log(teams)
         const seasonId = teams[0].seasonid; // all teams in the group have same season
@@ -179,35 +200,73 @@ const db = {
             // Begin transaction
             await pool.query('BEGIN');
 
-            // Insert group and get its ID
-            const groupRes = await pool.query(
-            `INSERT INTO groups (season_id, group_name) 
-            VALUES ($1, $2) 
-            RETURNING group_id`,
+            const groups = await pool.query(
+            `SELECT g.group_id FROM groups g WHERE g.season_id = $1 AND g.group_name= $2;`,
             [seasonId, groupName]
             );
-            const groupId = groupRes.rows[0].group_id;
+            let groupId;
+            if (groups.rows.length > 0) {
+                groupId = groups.rows[0].group_id;
+            }else{
+
+                // Insert group and get its ID
+                const groupRes = await pool.query(
+                `INSERT INTO groups (season_id, group_name) 
+                VALUES ($1, $2) 
+                RETURNING group_id`,
+                [seasonId, groupName]
+                );
+                groupId = groupRes.rows[0].group_id;
+            }
+                
+            
+            await pool.query(
+            `DELETE FROM group_teams WHERE group_id = $1`,
+                [groupId]
+            );
 
             // Insert into group_teams
-            const groupTeamsValues = teams.map((t, i) => `(${groupId}, ${t.teamid})`).join(', ');
-            await pool.query(`
-            INSERT INTO group_teams (group_id, team_id) VALUES ${groupTeamsValues}
-            `);
+            for (const t of teams) {
+                await pool.query(
+                    `INSERT INTO group_teams (group_id, team_id)
+                    VALUES ($1, $2)`,
+                    [groupId, t.teamid]
+                );
+            }
 
-            // Insert into group_standings
-            const standingsValues = teams.map(t =>
-            `(${groupId}, ${t.teamid}, ${t.mp}, ${t.w}, ${t.d}, ${t.l}, ${t.gf}, ${t.ga}, ${Number(t.w * 3) + Number(t.d)})`
-            ).join(', ');
+            for (const t of teams) {
+                const points = Number(t.w) * 3 + Number(t.d);
 
-            await pool.query(`
-            INSERT INTO group_standings 
-                (group_id, team_id, played, wins, draws, losses, goals_for, goals_against, points) 
-            VALUES ${standingsValues}
-            `);
+                await pool.query(
+                    `INSERT INTO group_standings
+                    (group_id, team_id, played, wins, draws, losses, goals_for, goals_against, points)
+                    VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)
+                    ON CONFLICT (group_id, team_id)
+                    DO UPDATE SET
+                        played = EXCLUDED.played,
+                        wins = EXCLUDED.wins,
+                        draws = EXCLUDED.draws,
+                        losses = EXCLUDED.losses,
+                        goals_for = EXCLUDED.goals_for,
+                        goals_against = EXCLUDED.goals_against,
+                        points = EXCLUDED.points`,
+                    [
+                        groupId,
+                        t.teamid,
+                        t.mp,
+                        t.w,
+                        t.d,
+                        t.l,
+                        t.gf,
+                        t.ga,
+                        points
+                    ]
+                );
+            }
 
             // Commit transaction
             await pool.query('COMMIT');
-            console.log(`Group ${groupName} inserted successfully!`);
+            console.log(`Group ${groupName} updated successfully!`);
         } catch (err) {
             await pool.query('ROLLBACK');
             console.error('Error inserting group:', err);

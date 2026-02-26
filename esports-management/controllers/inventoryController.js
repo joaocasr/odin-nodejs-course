@@ -37,7 +37,7 @@ const inventoryController = {
     res.render('players',{"players":players,"season":season,"seasonid":seasonid,"name":name,"search":true})
   },
   deletePlayer:async(res,season,seasonid,idplayer)=>{
-    const players = await db.deletePlayer(seasonid,idplayer)
+    await db.deletePlayer(seasonid,idplayer)
   },
   addSeason: async(req,res) =>{
     const seasons = await db.getAvailableSeasons()
@@ -48,11 +48,11 @@ const inventoryController = {
   },
   addGroups: async(req,res,seasonid) =>{
     const teams = await db.getAllTeams()
-    res.render('allocate-groups.ejs',{"teams":teams,"seasonid":seasonid,"groupsToUpdate":null})
+    res.render('allocate-groups.ejs',{"teams":teams,"seasonid":seasonid,"groupsToUpdate":null,"groupNamesToUpdate":null,"groupCounterToUpdate":null})
   },
   insertGroup: async(req,res) =>{
     for (const groupName in req.body["group"]) {
-      await db.insertGroup(groupName, req.body["group"][groupName]);
+      await db.insertUpdateGroup(groupName, req.body["group"][groupName]);
     }
     const seasons = await db.getSeasons()
     res.render('seasons', {"seasons":seasons})
@@ -68,19 +68,42 @@ const inventoryController = {
     })
     let groupNames = Object.keys(allgroups);
     let groupCounter = groupNames.length
-    console.log(allgroups)
-    res.render('allocate-groups.ejs',{"groupsToUpdate":allgroups,"allteams":teams,"teams":teams,"seasonid":seasonid})
+    res.render('allocate-groups.ejs',{"groupsToUpdate":allgroups,"groupNamesToUpdate":groupNames,"groupCounterToUpdate":groupCounter,"allteams":teams,"teams":teams,"seasonid":seasonid})
   },
   addTeams: async(req,res) =>{
     const teamid = await db.getNextTeamId()
     res.render('create-team.ejs',{"teamid":teamid})
   },
+  gotoCreatePage: async(req,res,seasonid) =>{
+    const players = await db.getPlayersNamesIds()
+    const teams = await db.getTeamNamesIds(seasonid)
+    console.log(players)
+    res.render('create-player.ejs',{"players":players,"teams":teams,"current_id":players[0].player_id + 1,"seasonid":seasonid})
+  },
   createTeam: async(req,res) =>{
     await db.addTeam(req.body.name,req.body.country,req.body.year)
     const teams = await db.getAllTeamsInfo()
     res.render('teams',{"teams":teams})
+  },
+  createPlayer: async(req,res) =>{
+    console.log("hey")
+    console.log(req.body)
+    await db.createPlayer(
+      req.body.playername,
+      req.body.playername,
+      req.body.country,
+      req.body.position,
+      req.body.goals,
+      req.body.matches,
+      req.body.assists,
+      req.body.yellows,
+      req.body.reds,
+      req.body.playerid,
+      req.body.teamid,
+      req.body.seasonid
+    )
+    const seasons = await db.getSeasons()
+    res.render('seasons', {"seasons":seasons})
   }
-
-
 }
 export default inventoryController;
