@@ -6,7 +6,7 @@ import multer from "multer";
 const storage = multer.diskStorage({
   destination: function (req, file, callback) {
     if(/^\/update\/player\/?$/.test(req.url)) callback(null, "public/players");
-    if(/^\/create\/player\/\d+$/.test(req.url)) callback(null, "public/teams");
+    if(/^\/create\/team\/?$/.test(req.url)) callback(null, "public/teams");
   },
   filename: function (req, file, callback) {
     console.log(req.body)
