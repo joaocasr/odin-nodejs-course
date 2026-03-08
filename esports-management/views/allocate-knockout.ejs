@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Group Allocation</title>
+
+<style>
+  body { margin: 0; font-family: Arial, sans-serif; background-color: #2519ae87; }
+
+  main{
+    margin:10px;
+  }
+  nav {
+      background-color: #1c2760; 
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.8rem 2rem;
+  }
+  nav .logo { font-size: 1rem; font-weight: bold; }
+  .logoimg{
+    display: block;
+  }
+  .ucllogo{
+    margin: 10px;
+  }
+  nav ul { list-style: none; display: flex; gap: 1rem; margin: 0; padding: 0; }
+  nav ul li a { color: white; text-decoration: none; font-weight: 500; }
+  nav ul li a:hover { text-decoration: underline; }
+    .placards-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 25px;
+        margin-bottom: 200px;
+    }
+
+    .placard {
+        color:white;
+        background: #2d365a;
+        border-radius: 14px;
+        padding: 20px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+        transition: transform 0.2s ease;
+    }
+
+    .placard:hover {
+        transform: translateY(-5px);
+    }
+
+    .placard-header {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.9rem;
+        opacity: 0.8;
+        margin-bottom: 15px;
+    }
+
+    .teams {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .team {
+        color:white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 40%;
+    }
+
+    .team-name {
+        color:white;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 5px;
+    }
+
+    .score {
+        font-size: 2rem;
+        font-weight: bold;
+    }
+
+    .vs {
+        color:white;
+        font-size: 1rem;
+        opacity: 0.7;
+    }
+    .teamlogo{
+        width:35px;
+        margin:4px;
+    }
+
+ footer {
+      background-color: #04104d;
+      color: white;
+      text-align: center;
+      padding: 2rem 1rem;
+      margin-top: 2rem;
+      background-image: url('/logos/logofooter.png');
+      position: fixed;
+      left: 0px;
+      bottom: 0px;
+      width: 100%;
+      clear: both;
+      position: relative;
+
+    }
+    
+    footer a { color: #f5c518; text-decoration: none; margin: 0 0.5rem; }
+    footer a:hover { text-decoration: underline; }
+    
+    h1 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .top-controls {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  .groups-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+
+  .group-card {
+    background: #132c5a;
+    border-radius: 10px;
+    padding: 15px;
+    color:white;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  }
+
+  .group-card h2 {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 10px;
+    font-size: 12px;
+  }
+
+  th, td {
+    padding: 6px;
+    border-bottom: 1px solid #2a4c8a;
+    text-align: center;
+  }
+
+  th:first-child,
+  td:first-child {
+    text-align: left;
+  }
+
+  .add-team {
+    display: flex;
+    gap: 5px;
+  }
+
+  select {
+    flex: 1;
+    padding: 5px;
+    border-radius: 5px;
+    border: none;
+  }
+
+  button {
+    background: #3d51b8;
+    border: none;
+    color: white;
+    padding: 6px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background: #171d57;
+  }
+  .navlink{
+    background-color: #1e3a8a;
+    border-radius: 4px;
+    border: solid 1px white;
+    padding: 10px;
+  }
+  .addgroupbtn{
+    display: inline-flex;
+    justify-content: center;
+    align-content: center;
+    width: 94%;
+    margin-bottom: 10px;
+  }
+</style>
+
+</head>
+
+<nav>
+    <div class="logoimg">
+    <div class="logo">Champions League Inventory</div>
+    <div>
+      <img class="ucllogo" width="80px" height="80px" src="/logos/logo.png"/>
+    </div>
+    </div>
+    <ul>
+      <div class="navlink"><li><a href="/">Home</a></li></div>
+    </ul>
+</nav>
+
+<body>
+
+<h1>Allocate Knockout Games</h1>
+<main>
+<div class="top-controls">
+  <button onclick="createKnockout()">+ Add Knockout Game</button>
+</div>
+<div id="placards-grid" class="placards-grid">
+
+
+</div>
+<script>
+
+
+let game = 1;
+let knockoutTeams = [] 
+function createKnockout() {
+  const allTeams = <%- JSON.stringify(teams) %>;
+  let teamoptions = Object.values(allTeams).map(team => `<option value="${team.teamid}">${team.teamname}</option>`).join("");
+  teamoptions = `<option value="" disabled selected>Select the team</option>`+ teamoptions
+  for (let round = 1; round<3; round++) {
+    console.log("hey")
+    const cardgame = document.createElement("div");
+    cardgame.className = `group-leg-${round}-${game}`;
+    cardgame.id = `group-leg-${round}-${game}`;
+
+    cardgame.innerHTML = `
+      <div class="placard">
+            <div class="placard-header">
+              Leg ${round}
+            <span class="date">
+            </span>
+            </div>
+            <div class="teams">
+            <div class="team">
+                  <img class="teamlogo" src=""/>
+                  <select id="select${game}-1" onchange="avoidDuplicate(this)">
+                  ${teamoptions}  
+                  </select>
+                  <span class="score">0</span>
+              </div>
+
+              <div class="vs">vs</div>
+
+              <div class="team">
+                  <img class="teamlogo" src=""/>
+                  <select id="select${game}-2" onchange="avoidDuplicate(this)">
+                  ${teamoptions}  
+                  </select>
+                  <span class="score">0</span>
+              </div>
+
+              </div>
+
+          </div>
+    `;
+
+    document.getElementById("placards-grid").appendChild(cardgame);
+    game+=1;
+  }
+  filterTeams();
+}
+
+function avoidDuplicate(e){
+  let select = null;
+  console.log(e.id.substring(0, e.id.length - 1))
+  if(e.id.includes("-1")) select= document.getElementById(e.id.substring(0, e.id.length - 1)+"2")
+  if(e.id.includes("-2")) select= document.getElementById(e.id.substring(0, e.id.length - 1)+"1")
+  Array.from(select.options).forEach(option => {
+        if (option.value !== e.value) {
+          option.disabled = false;
+        } else {
+          option.disabled = true;
+        }
+      });
+}
+
+function filterTeams(){
+  const selects = document.querySelectorAll("select");
+
+  const selectedValues = Array.from(selects).map(s => s.value);
+  console.log(selectedValues)
+  selects.forEach(select => {
+    const currentValue = select.value;
+
+    Array.from(select.options).forEach(option => {
+      if (
+        option.value !== currentValue &&
+        selectedValues.includes(option.value)
+      ) {
+        option.disabled = true;
+      } else {
+        option.disabled = false;
+      }
+    });
+  });
+}
+</script>
+
+</main>
+  <footer>
+    <p>&copy; 2026 Champions League Inventory. All Rights Reserved.</p>
+    <p>
+      <a href="/about">About</a> |
+      <a href="/contact">Contact</a> |
+      <a href="/privacy">Privacy Policy</a>
+    </p>
+  </footer>
+</body>
+</html>

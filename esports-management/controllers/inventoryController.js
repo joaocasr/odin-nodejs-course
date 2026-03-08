@@ -17,7 +17,7 @@ const inventoryController = {
   },
   getknockoutGames: async(res,season,seasonid,phase)=>{
     const games = await db.getknockoutPhaseGames(seasonid,phase)
-    res.render('groups',{"season":season,"seasonid":seasonid, "groups":null,"games": games, "phase": phase})
+    res.render('groups',{"season":season,"seasonid":seasonid, "groups":null,"games": games, "phase": Number(phase)})
   },
   getPlayers: async(res,season,seasonid)=>{
     const players = await db.getPlayers(seasonid)
@@ -46,9 +46,14 @@ const inventoryController = {
   createSeason: async(req,res,season) =>{
     await db.addSeason(season)
   },
-  addGroups: async(req,res,seasonid) =>{
-    const teams = await db.getAllTeams()
-    res.render('allocate-groups.ejs',{"teams":teams,"seasonid":seasonid,"groupsToUpdate":null,"groupNamesToUpdate":null,"groupCounterToUpdate":null})
+  addGroups: async(req,res,seasonid,phase) =>{
+    if(phase==0){
+      const teams = await db.getAllTeams()
+      res.render('allocate-groups.ejs',{"teams":teams,"seasonid":seasonid,"groupsToUpdate":null,"groupNamesToUpdate":null,"groupCounterToUpdate":null})
+    }else{
+      const teams = await db.getAllTeams(seasonid)
+      res.render('allocate-knockout.ejs',{"teams":teams})
+    }
   },
   insertGroup: async(req,res) =>{
     for (const groupName in req.body["group"]) {
@@ -57,7 +62,7 @@ const inventoryController = {
     const seasons = await db.getSeasons()
     res.render('seasons', {"seasons":seasons})
   },
-  updateGroups: async(req,res,seasonid) =>{
+  updateGroups: async(req,res,seasonid,phase) =>{
     console.log("aqui")
     const groups = await db.getSeasonGroups(seasonid)
     const teams = await db.getAllTeams()

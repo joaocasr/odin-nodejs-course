@@ -5,10 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Champions League Inventory</title>
   <style>
-    /* --- Reset & Body --- */
     body { margin: 0; font-family: Arial, sans-serif; background-color: #2519ae87; }
 
-    /* --- Navbar --- */
     nav {
       background-color: #1c2760; 
       color: white;
@@ -170,12 +168,14 @@
     .addgroupbtn{
         color: white;
         background-color: #142a5c;
-        width: 180px;
+        width: 220px;
         border: 1px aliceblue;
         border-radius: 10px;
         font-size: 16px;
+        padding: 10px;
         height: 50px;
         box-shadow: 2px 2px #372c2c;
+        margin-bottom: 10px;
     }
     .addgroupbtn:hover{
         cursor: pointer;
@@ -190,7 +190,6 @@
 </head>
 <body>
 
-  <!-- --- Navbar --- -->
   <nav>
     <div class="logoimg">
     <div class="logo">Champions League Inventory</div>
@@ -208,10 +207,14 @@
 
     <main>
     <h3 class="season">Season <%= season %></h3> 
-     <% if( groups==undefined || groups==null || (groups!=null && Object.keys(groups).length == 0)){ %>
-        <button class="addgroupbtn" onclick="location.href='/add/groups/<%= seasonid %>'">+ Add Group</button> 
+     <% if( games== undefined && (groups==undefined || groups==null || (groups!=null && Object.keys(groups).length == 0))){ %>
+        <button class="addgroupbtn" onclick="location.href='/add/groups/<%= seasonid %>/<%= phase %>'">+ Add Groups</button> 
+     <%} else if( (games != undefined && games!=null && Object.keys(games).length == 0) && (groups==undefined || groups==null || (groups!=null && Object.keys(groups).length == 0))){ %>
+        <button class="addgroupbtn" onclick="location.href='/add/groups/<%= seasonid %>/<%= phase %>'">+ Add Knockout Stages</button> 
+     <%} else if( (games != undefined && games!=null && Object.keys(games).length > 0) && (groups==undefined || groups==null || (groups!=null && Object.keys(groups).length == 0))){ %>
+        <button class="addgroupbtn" onclick="location.href='/add/groups/<%= seasonid %>/<%= phase %>'">Update Knockout Stages</button> 
     <% } else { %>    
-        <button class="addgroupbtn" onclick="location.href='/update/groups/<%= seasonid %>'">+ Update Groups</button> 
+        <button class="addgroupbtn" onclick="location.href='/update/groups/<%= seasonid %>/<%= phase %>'">Update Groups</button>
     <% } %>
     
     <% if(groups){ %>
@@ -270,7 +273,11 @@
         <div class="placard">
 
             <div class="placard-header">
-            Leg <%= game.leg_number %>
+            <% if(phase==4){ %>
+                Final
+            <% } else { %> 
+                Leg <%= game.leg_number %>
+            <% } %> 
             <span class="date">
                 <%= new Date(game.match_date).toLocaleDateString() %>
             </span>
@@ -302,7 +309,6 @@
     
   </main>
 
-  <!-- --- Footer --- -->
   <footer>
     <p>&copy; 2026 Champions League Inventory. All Rights Reserved.</p>
     <p>
